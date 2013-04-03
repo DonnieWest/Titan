@@ -25,6 +25,7 @@
 *.log
 *.sql
 *.sqlite
+*.gitignore
 
 # OS generated files #
 ######################
@@ -40,12 +41,14 @@ Thumbs.db
 # Directories #
 ###############
 
+proguard_logs/
 gen/
 src-backup/
 classes/
 target/
 gen-external-apklibs/
 .ensime_lucene/
+.ensime/
 
 # built application files
 *.apk

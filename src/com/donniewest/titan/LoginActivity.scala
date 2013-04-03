@@ -1,16 +1,14 @@
 package com.donniewest.titan
 
-import Authorization.{AuthWebView}
 import com.actionbarsherlock.app.SherlockActivity
 import com.donniewest.titan.R
 import com.donniewest.titan.TentAuth
 import android.widget.{TextView, Button}
 import org.scaloid.common._
-import android.os.{AsyncTask, Bundle}
+import android.os.Bundle
 import scala.concurrent.ops._
-import android.net.ConnectivityManager
-import android.content.{Intent, Context}
-import com.github.kevinsawicki.http.HttpRequest
+import android.util.Log
+import android.content.Intent
 
 class LoginActivity extends SherlockActivity with SActivity {
 
@@ -30,17 +28,14 @@ class LoginActivity extends SherlockActivity with SActivity {
         val redirection = TentAuth.redirect_url(hurl)
         error(redirection)
         openUri(redirection)
-        val data = getIntent.getData
-        val path = data.getPathSegments
-        error(path.get(0))
-        TentAuth.auth(path.get(0))
+
+
 
 
       }
     }
 
   }
-
 
  /* def respond(text: String) = {
 

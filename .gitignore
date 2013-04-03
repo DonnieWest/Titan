@@ -25,6 +25,7 @@
 *.log
 *.sql
 *.sqlite
+*.gitignore
 
 # OS generated files #
 ######################
@@ -40,6 +41,7 @@ Thumbs.db
 # Directories #
 ###############
 
+proguard_logs/
 gen/
 src-backup/
 classes/

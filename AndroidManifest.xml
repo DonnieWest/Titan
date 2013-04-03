@@ -28,8 +28,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize" android:label="@string/app_name">
             <intent-filter>
 
-                <action android:name="android.intent.action.VIEW" />
-
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -38,13 +36,31 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 
-    			<data android:scheme="titan" />
-
-
-    					 
             </intent-filter>
         </activity>
-        <service android:name=".Authorization.AuthWebView"/>
+        <activity android:name=".TimelineActivity" android:label="Timeline">
+        <intent-filter>
+
+            <data android:scheme="titan" />
+
+            <action android:name="android.intent.action.VIEW" />
+
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+
+        </intent-filter>
+        </activity>
+
+        <service
+            android:name=".Authorization.AuthService">
+        </service>
+
+
     </application>
 
 </manifest>
