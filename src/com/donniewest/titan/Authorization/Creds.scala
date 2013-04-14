@@ -25,10 +25,12 @@ object Creds {
   @BeanProperty var expires: String = ""
   @BeanProperty var current_timestamp = 0
 
+  def timestamp = setCurrent_timestamp((System.currentTimeMillis() / 1000).asInstanceOf[Int])
+
+
   def generate_authheader(request_uri: String, method: String) = {
     Log.e("AuthHeaders", "Entering generate authHeader")
-    def create_timestamp = System.currentTimeMillis() / 1000
-    def nonce : Int = {
+    val nonce : Int = {
       Log.e("AuthHeaders", "Generating Nonce")
       val seed = SecureRandom.getInstance("SHA1PRNG")
       Log.e("AuthHeaders", "Generating Seed")
@@ -38,14 +40,11 @@ object Creds {
       Log.e("AuthHeaders", "Random2 generations")
       random2.setSeed(seed.generateSeed(10))
       Log.e("AuthHeaders", "Setting seed")
-      val nonciated = random2.nextInt()   // here is where I casted it to a string. Not working.
+      val nonciated = random2.nextInt()
       Log.e("AuthHeaders", "Finishing up nonce!")
       Log.e("AuthHeaders", "Nonce is " + nonciated.toString)
       if (nonciated < 0) -nonciated else nonciated
     }
-    Log.e("AuthHeaders", "nonce is " + nonce.toString)
-    val timestamp = create_timestamp
-    Log.e("AuthHeaders", "timestamp is " + timestamp.toString)
 
     def mac = {
       /*
@@ -62,15 +61,17 @@ object Creds {
     val sign_this = {
       Log.e("AuthHeaders", "Entering sign this")
       val host = Creds.getHost
-      Log.e("AuthHeaders", "timestamp, nonce, method, etc are " + timestamp + " " + nonce + " " + method + " " + request_uri + " " + host)
-      "$timestamp/n$nonce/n$method/n$url/n$host/n443/n /n".format(timestamp, nonce, method, request_uri, host)
+      Log.e("AuthHeaders", "timestamp, nonce, method, etc are " + getCurrent_timestamp + " " + nonce + " " + method + " " + request_uri + " " + host)
+      s"$getCurrent_timestamp/n$nonce/n$method/n$request_uri/n$host/n443/n /n"
 
 
     }
 
-    val keyspec = new SecretKeySpec(Creds.getAuth_mac_key.getBytes(), Creds.getAuth_mac_alg)
+    Log.e("AuthHeaders", "sign this is " + sign_this)
+    Log.e("AuthHeaders", "Mac key is " + Creds.getReg_mac_key + " and Mac Algorithm is " + Creds.getReg_mac_alg)
+    val keyspec = new SecretKeySpec(Creds.getReg_mac_key.getBytes,"HmacSHA256")
     Log.e("AuthHeaders", "Keyspec is " + keyspec.toString)
-    val instance = Mac.getInstance(Creds.getAuth_mac_alg)
+    val instance = Mac.getInstance("HmacSHA256")
     instance.init(keyspec)
     Base64.encodeBytes(instance.doFinal(sign_this.getBytes))
 
@@ -78,9 +79,8 @@ object Creds {
 
   Log.e("AuthHeaders", "The mac is " + mac)
 
-  val auth_header = "MAC id=" + Creds.getReg_mac_id + ", ts=" + timestamp + ", nonce=" + nonce + ", mac=" + mac
+  val auth_header = "MAC id=" + Creds.getReg_mac_id + ", ts=" + getCurrent_timestamp + ", nonce=" + nonce + ", mac=" + mac
   Log.e("AuthHeaders","The mac is " +  mac)
-  setCurrent_timestamp(timestamp.asInstanceOf[Int])
   auth_header
   }
 
@@ -92,8 +92,10 @@ object Creds {
   val redirect_uri = "titan://oath"
   val content = "application/vnd.tent.v0+json"
   def send_signed_json(url: String, json: String) = {
-
-    HttpRequest.post(getAuth_location + url).accept(Creds.content).contentType(Creds.content).authorization(generate_authheader(url, "POST")).send(json).body
+    Log.e("AuthHeaders", "The auth location is:" + getAuth_location.toString + url)
+    val authorization_headers = generate_authheader(url, "POST")
+    Log.e("AuthHeaders", "The auth header is:" + authorization_headers)
+    HttpRequest.post(getAuth_location + url).accept(Creds.content).contentType(Creds.content).authorization(authorization_headers).send(json).body()
 }
 
   def get_signed_body(url: String) = {

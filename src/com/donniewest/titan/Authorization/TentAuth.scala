@@ -54,6 +54,7 @@ object TentAuth {
   def auth(code: String) = {
 
     Creds.setCode(code)
+    Creds.timestamp
     val uri = "apps/" + Creds.getId + "/authorizations"
     val auth_json = """   {
                         "code": """" + Creds.getCode + """",
@@ -64,7 +65,7 @@ object TentAuth {
                                                                                         """
     Log.e("Authorized!", auth_json + "uri also is " + uri)
     Log.e("Authorized!", "Your code is " + Creds.getCode)
-    val response_body = Creds.send_signed_json(uri, auth_json)
+    val response_body = Creds.send_signed_json(uri, auth_json).toString
     Log.e("Authorized!", "After sending the signed json, the response body is " + response_body)
     val json_response = parse(response_body)
     Creds.setAuth_mac_key(compact(render(json_response \\ "mac_key")))
