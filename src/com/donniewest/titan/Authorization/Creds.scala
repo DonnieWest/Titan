@@ -8,6 +8,7 @@ import javax.crypto.spec.SecretKeySpec
 import scala.beans.BeanProperty
 import util.Random
 import android.util.Log
+import java.util.UUID
 
 object Creds {
 
@@ -30,39 +31,21 @@ object Creds {
 
   def generate_authheader(request_uri: String, method: String) = {
     Log.e("AuthHeaders", "Entering generate authHeader")
-    val nonce : Int = {
-      Log.e("AuthHeaders", "Generating Nonce")
-      val seed = SecureRandom.getInstance("SHA1PRNG")
-      Log.e("AuthHeaders", "Generating Seed")
-      seed.nextInt(102943)
-      Log.e("AuthHeaders", "Next int on Seed")
-      val random2 = SecureRandom.getInstance("SHA1PRNG")
-      Log.e("AuthHeaders", "Random2 generations")
-      random2.setSeed(seed.generateSeed(10))
-      Log.e("AuthHeaders", "Setting seed")
-      val nonciated = random2.nextInt()
-      Log.e("AuthHeaders", "Finishing up nonce!")
-      Log.e("AuthHeaders", "Nonce is " + nonciated.toString)
-      if (nonciated < 0) -nonciated else nonciated
+    val nonce = {
+
+// got this from https://gist.github.com/mahata/4145905
+
+      Stream.continually(util.Random.nextPrintableChar) take 5 mkString
     }
 
     def mac = {
-      /*
-      val sign_this = {
-        timestamp + "/n" +
-        nonce + "/n" +
-        "POST" + "/n" +
-        "/apps/" + Creds.getId + "/authorizations" + "/n" +
-        Creds.getHost + "/n" +
-        "443" + "/n"  +
-        ""  + "/n"
-        **/
+
 
     val sign_this = {
       Log.e("AuthHeaders", "Entering sign this")
       val host = Creds.getHost
-      Log.e("AuthHeaders", "timestamp, nonce, method, etc are " + getCurrent_timestamp + " " + nonce + " " + method + " " + request_uri + " " + host)
-      s"$getCurrent_timestamp/n$nonce/n$method/n$request_uri/n$host/n443/n /n"
+      Log.e("AuthHeaders", "timestamp, nonce, method, etc are " + getCurrent_timestamp + " " + nonce + " " + method + " " + android.net.Uri.encode(request_uri) + " " + android.net.Uri.encode(host))
+      getCurrent_timestamp + "\n" + nonce + "\n" + method + "\n" + android.net.Uri.encode("/" + request_uri) + "\n" + host + "\n" + "443" + "\n" + "" + "\n"
 
 
     }
@@ -79,7 +62,7 @@ object Creds {
 
   Log.e("AuthHeaders", "The mac is " + mac)
 
-  val auth_header = "MAC id=" + Creds.getReg_mac_id + ", ts=" + getCurrent_timestamp + ", nonce=" + nonce + ", mac=" + mac
+  val auth_header = s"""MAC id=$getReg_mac_id, ts="$getCurrent_timestamp", nonce="$nonce", mac="$mac""""
   Log.e("AuthHeaders","The mac is " +  mac)
   auth_header
   }
