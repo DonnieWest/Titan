@@ -77,14 +77,4 @@ object TentAuth {
     Log.e("Authorized!", "Your mac key is " + Creds.getAuth_mac_key)
     Log.e("Authorized!", "Your refresh token is " + Creds.getRefresh_token)
   }
-
-  /*
-    "access_token": "u:fjWA1hp2bU4XtqFs9dNnzQ",
-"mac_key": "feb5bb691c6469f3d1f6e7a3be001651",
-"mac_algorithm": "hmac-sha-256",
-"token_type": "mac",
-"refresh_token": "fac99b555aac855c9b0706e54fc95044",
-"tent_expires_at": 1356370128
-
-   */
 }

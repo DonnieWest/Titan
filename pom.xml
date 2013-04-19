@@ -12,7 +12,7 @@
     <url>https://github.com.donniewest.titan</url>
 
     <properties>
-        <abs.version>4.2.0</abs.version>
+        <abs.version>4.3.0</abs.version>
         <scala.version>2.10.1</scala.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <android.version>4.1.1.4</android.version>
@@ -41,16 +41,9 @@
         </dependency>
         <dependency>
             <groupId>com.actionbarsherlock</groupId>
-            <artifactId>library</artifactId>
-            <version>${abs.version}</version>
-            <type>apklib</type>
-        </dependency>
-        <dependency>
-            <groupId>com.actionbarsherlock</groupId>
             <artifactId>actionbarsherlock</artifactId>
             <version>${abs.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
+            <type>apklib</type>
         </dependency>
         <dependency>
             <groupId>com.github.kevinsawicki</groupId>
@@ -65,27 +58,8 @@
         </dependency>
     </dependencies>
     <build>
-        <sourceDirectory>/home/igneo676/Dropbox/Apps/Titan/src</sourceDirectory> 
+	<sourceDirectory>/home/igneo676/Dropbox/Apps/Titan/src</sourceDirectory>
         <plugins>
-<!--             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.7</version>
-                <executions>
-                  <execution>
-                    <id>add-source</id>
-                    <phase>generate-sources</phase>
-                    <goals>
-                        <goal>add-source</goal>
-                    </goals>
-                    <configuration>
-                        <sources>
-                            <source>src/main/scala</source>
-                      </sources>
-                    </configuration>
-                  </execution>
-                </executions>
-                </plugin> -->
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
@@ -121,8 +95,6 @@
     <profiles>
         <profile>
             <id>release</id>
-            <!-- via this activation the profile is automatically used when the release is done with the maven release
-            plugin -->
             <activation>
                 <property>
                     <name>performRelease</name>

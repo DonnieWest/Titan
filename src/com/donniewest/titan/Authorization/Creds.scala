@@ -2,13 +2,11 @@ package com.donniewest.titan
 
 import com.github.kevinsawicki.http.HttpRequest
 import com.github.kevinsawicki.http.HttpRequest.Base64
-import java.security.SecureRandom
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import scala.beans.BeanProperty
 import util.Random
 import android.util.Log
-import java.util.UUID
 
 object Creds {
 
@@ -35,7 +33,7 @@ object Creds {
 
 // got this from https://gist.github.com/mahata/4145905
 
-      Stream.continually(util.Random.nextPrintableChar) take 5 mkString
+      Stream.continually(util.Random.nextPrintableChar) take 6 mkString
     }
 
     def mac = {
@@ -45,18 +43,24 @@ object Creds {
       Log.e("AuthHeaders", "Entering sign this")
       val host = Creds.getHost
       Log.e("AuthHeaders", "timestamp, nonce, method, etc are " + getCurrent_timestamp + " " + nonce + " " + method + " " + android.net.Uri.encode(request_uri) + " " + android.net.Uri.encode(host))
-      getCurrent_timestamp + "\n" + nonce + "\n" + method + "\n" + android.net.Uri.encode("/" + request_uri) + "\n" + host + "\n" + "443" + "\n" + "" + "\n"
+      getCurrent_timestamp + "\n" + nonce + "\n" + method + "\n" + android.net.Uri.encode("/tent/" + request_uri) + "\n" + android.net.Uri.encode(host) + "\n" + "443" + "\n" + "" + "\n" + "" + "\n"
 
 
     }
 
     Log.e("AuthHeaders", "sign this is " + sign_this)
     Log.e("AuthHeaders", "Mac key is " + Creds.getReg_mac_key + " and Mac Algorithm is " + Creds.getReg_mac_alg)
-    val keyspec = new SecretKeySpec(Creds.getReg_mac_key.getBytes,"HmacSHA256")
-    Log.e("AuthHeaders", "Keyspec is " + keyspec.toString)
+    val m = Mac.getInstance("HmacSHA256")
+    m.init(new SecretKeySpec(Creds.getReg_mac_key.getBytes,"HmacSHA256"))
+    m.update(sign_this.getBytes)
+    val res = m.doFinal()
+//    android.util.Base64.encodeToString(res, android.util.Base64.URL_SAFE)
+    Base64.encodeBytes(res)
+
+/*    val keyspec = new SecretKeySpec(Creds.getReg_mac_key.getBytes,"HmacSHA256")
     val instance = Mac.getInstance("HmacSHA256")
     instance.init(keyspec)
-    Base64.encodeBytes(instance.doFinal(sign_this.getBytes))
+    Base64.encode(instance.doFinal(sign_this.getBytes))*/
 
     }
 
@@ -85,7 +89,7 @@ object Creds {
     Log.e("AuthHeaders", "Entering signed body")
     val auth_headers = generate_authheader(url, "GET")
     Log.e("AuthHeaders", auth_headers)
-    HttpRequest.get(url).accept(Creds.content).contentType(Creds.content).authorization(auth_headers).body
+    HttpRequest.get(getAuth_location + url).accept(Creds.content).contentType(Creds.content).authorization(auth_headers).body
 
 
   }
