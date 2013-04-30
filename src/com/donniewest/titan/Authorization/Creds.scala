@@ -33,7 +33,10 @@ object Creds {
 
 // got this from https://gist.github.com/mahata/4145905
 
-      Stream.continually(util.Random.nextPrintableChar) take 6 mkString
+//      Stream.continually(util.Random.nextPrintableChar) take 6 mkString
+        Random.alphanumeric.take(8).mkString
+
+
     }
 
     def mac = {
@@ -43,7 +46,16 @@ object Creds {
       Log.e("AuthHeaders", "Entering sign this")
       val host = Creds.getHost
       Log.e("AuthHeaders", "timestamp, nonce, method, etc are " + getCurrent_timestamp + " " + nonce + " " + method + " " + android.net.Uri.encode(request_uri) + " " + android.net.Uri.encode(host))
-      getCurrent_timestamp + "\n" + nonce + "\n" + method + "\n" + android.net.Uri.encode("/tent/" + request_uri) + "\n" + android.net.Uri.encode(host) + "\n" + "443" + "\n" + "" + "\n" + "" + "\n"
+      val signed = new StringBuilder()
+      signed.append(getCurrent_timestamp).append("\n")
+        .append(nonce).append("\n")
+        .append(method).append("\n")
+        .append(android.net.Uri.encode("/" + request_uri)).append("\n")
+        .append(android.net.Uri.encode(host)).append("\n")
+        .append("443").append("\n")
+        .append("").append("\n")
+      signed.mkString
+//      getCurrent_timestamp + "\n" + nonce + "\n" + method + "\n" + android.net.Uri.encode("/tent/" + request_uri) + "\n" + android.net.Uri.encode(host) + "\n" + "443" + "\n" + "" + "\n" /*+ "" + "\n"*/
 
 
     }
@@ -54,8 +66,8 @@ object Creds {
     m.init(new SecretKeySpec(Creds.getReg_mac_key.getBytes,"HmacSHA256"))
     m.update(sign_this.getBytes)
     val res = m.doFinal()
-//    android.util.Base64.encodeToString(res, android.util.Base64.URL_SAFE)
-    Base64.encodeBytes(res)
+    android.util.Base64.encodeToString(res, android.util.Base64.URL_SAFE)
+//    Base64.encodeBytes(res)
 
 /*    val keyspec = new SecretKeySpec(Creds.getReg_mac_key.getBytes,"HmacSHA256")
     val instance = Mac.getInstance("HmacSHA256")
@@ -82,7 +94,9 @@ object Creds {
     Log.e("AuthHeaders", "The auth location is:" + getAuth_location.toString + url)
     val authorization_headers = generate_authheader(url, "POST")
     Log.e("AuthHeaders", "The auth header is:" + authorization_headers)
-    HttpRequest.post(getAuth_location + url).accept(Creds.content).contentType(Creds.content).authorization(authorization_headers).send(json).body()
+    val request = HttpRequest.post(getAuth_location + url).accept(Creds.content).contentType(Creds.content).authorization(authorization_headers).send(json)
+    Log.e("AuthHeaders", "The value of the request is " + request.url.toString + " and the Default Port is " + request.url.getDefaultPort + "and the port is" + request.url.getPort)
+    request.headers
 }
 
   def get_signed_body(url: String) = {

@@ -31,7 +31,7 @@ object TentAuth {
       Creds.setReg_mac_id(compact(render((json_request \\ "mac_key_id"))))
       Creds.setReg_mac_alg(compact(render((json_request \\ "mac_algorithm"))))
       Log.d("Register", "#7 All finished, let's move on!")
-
+      ren
     }
 
     def build_url = {
