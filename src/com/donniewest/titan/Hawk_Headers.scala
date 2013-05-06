@@ -19,7 +19,7 @@ object Hawk_Headers {
     val app_digest = "" //dunno what an app digest is, but let's figure it out!
 
     val hash = Sign.Base64_and_HmacSha256("hawk.1.payload\napplication/json\n" + body)
-    val mac = Sign.Base64_and_HmacSha256(s"hawk.1.auth\n$timestamp\n$method\n$path\n$host\n443\n$hash\n$app\n$app_digest")
+    val mac = Sign.Base64_and_HmacSha256(s"hawk.1.header\n$timestamp\n$method\n$path\n$host\n443\n$hash\n$app\n$app_digest")
 
     s"Hawk id=\"$hawk_id\", mac=\"$mac\", ts=\"$timestamp\", nonce=\"$nonce\", hash=\"$hash\", app=\"$app\""
 
