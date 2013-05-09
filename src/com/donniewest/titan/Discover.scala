@@ -1,7 +1,6 @@
 package com.donniewest.titan
 import com.github.kevinsawicki.http.HttpRequest
 import net.liftweb.json._
-import android.util.Log
 
 
 object Discover {
@@ -13,11 +12,10 @@ object Discover {
   }
 
 
-  def extract_endpoints(server: String) = {
+  def extract_endpoints(server: String) {
 
 
     val endpoints_in_json = parse(HttpRequest.get(server).accept("application/vnd.tent.post.v0+json").body())
-//    Log.e("Endpoints", "The endpoints are " + compact(render(endpoints_in_json)))
     Endpoints.setOauth_auth(compact(render(endpoints_in_json \\ "oauth_auth")).replace("\"",""))
     Endpoints.setEntity(compact(render(endpoints_in_json \\ "entity")).split("\"")(3).replace("\"","")) //returns two different entity locations, trimming it down!
     Endpoints.setOauth_token(compact(render(endpoints_in_json \\ "oauth_token")).replace("\"",""))

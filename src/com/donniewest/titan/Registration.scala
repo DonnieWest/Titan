@@ -8,7 +8,7 @@ import android.util.Log
 
 object Registration {
 
-  def register() = {
+  def register() {
 
      val post_location_header = HttpRequest.post(Endpoints.getNew_post).contentType("application/vnd.tent.post.v0+json; type=\"https://tent.io/types/app/v0#\"").send(Json.registration).header("Link")
 
@@ -27,7 +27,7 @@ object Registration {
 
     val location = HttpRequest.get(Endpoints.getOauth_auth + "?clientid=" + Credentials.getClient_id + "&state=" + Creds.state).header("Location")
     val code_url = location.asInstanceOf[URL]     //ugliness, casting to extract Code from the location, not type safe!
-    val code = code_url.getQuery()
+    val code = code_url.getQuery
     val json = "{\n  \"code\": \"%s\",\n  \"token_type\": \"https://tent.io/oauth/hawk-token\"\n}".format(code)
 
     val json_response = HttpRequest.post(Endpoints.getOauth_token).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauth_token)).contentType("application/json").ok()
