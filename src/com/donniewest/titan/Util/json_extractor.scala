@@ -8,7 +8,7 @@ object json_extractor {
   def extract(from_json: JValue, to_extract: String ) = {
 
 
-    compact(render(from_json \\ to_extract))
+    compact(render(from_json \\ to_extract)).replace("\"","")
 
 
 
