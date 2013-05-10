@@ -4,6 +4,7 @@ import com.github.kevinsawicki.http.HttpRequest
 import net.liftweb.json._
 import java.net.URL
 import android.util.Log
+import com.donniewest.titan.Util.json_extractor
 
 
 object Registration {
@@ -19,22 +20,26 @@ object Registration {
      Credentials.setHawk_algorithm(compact(render(json_hawk_creds \\ "hawk_algorithm")))
      Credentials.setHawk_key(compact(render(json_hawk_creds \\ "hawk_key")).replace("\"",""))
      Credentials.setClient_id(compact(render(json_hawk_creds \\ "post")).replace("\"",""))
-     Credentials.setHawk_id(compact(render(json_hawk_creds \\ "id")).split(",")(0).split(":")(1).replace("\"",""))
+     Credentials.setHawk_id(compact(render(json_hawk_creds \\ "id")).split(",")(0).split(":")(1).replace("\"",""))  //I can extract this /nicer/ with the methods in lift-json, but I'm lazy right now
   }
 
 
   def Oauth() = {
 
-    val location = HttpRequest.get(Endpoints.getOauth_auth + "?clientid=" + Credentials.getClient_id + "&state=" + Creds.state).header("Location")
-    val code_url = location.asInstanceOf[URL]     //ugliness, casting to extract Code from the location, not type safe!
+    val location = HttpRequest.get(Endpoints.getOauth_auth + "?client_id=" + Credentials.getClient_id + "&state=" + Creds.state).header("Location")
+    val code_url = new URL(location)     //ugliness, casting to extract Code from the location, not type safe!
     val code = code_url.getQuery
     val json = "{\n  \"code\": \"%s\",\n  \"token_type\": \"https://tent.io/oauth/hawk-token\"\n}".format(code)
 
-    val json_response = HttpRequest.post(Endpoints.getOauth_token).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauth_token)).contentType("application/json").ok()
+    val json_response = HttpRequest.post(Endpoints.getOauth_token).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauth_token)).contentType("application/json").send(json).body
 
     Log.e("Error?", json_response.toString)
 
-
+    Temporary_Credentials.setAccess_token(json_extractor.extract(json_response,"access_token"))
+    Temporary_Credentials.setHawk_algorithm(json_extractor.extract(json_response,"hawk_algorithm"))
+    Temporary_Credentials.setHawk_key(json_extractor.extract(json_response,"hawk_key"))
+    Temporary_Credentials.setToken_type(json_extractor.extract(json_response,"token_type"))
+    true
 
   }
 
