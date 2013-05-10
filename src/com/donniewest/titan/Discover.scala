@@ -8,12 +8,13 @@ object Discover {
   def find_server(entity: String) = {
 
     val Link = HttpRequest.head(entity).header("Link")
-    entity + Link.split("<")(1).split(">")(0) //extract the necessary server endpoint and return
+    entity + Link.split("<")(1).split(">")(0) //extract the necessary server endpoint, return it
   }
 
 
   def extract_endpoints(server: String) {
 
+    //takes in the server from find_server, extracts the endpoints for me to post and authenticate + etc
 
     val endpoints_in_json = parse(HttpRequest.get(server).accept("application/vnd.tent.post.v0+json").body())
     Endpoints.setOauth_auth(compact(render(endpoints_in_json \\ "oauth_auth")).replace("\"",""))

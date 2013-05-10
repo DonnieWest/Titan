@@ -14,7 +14,6 @@ class TimelineActivity extends SherlockActivity with SActivity {
       Log.e("Intentional", "The data is " + data)
       spawn {
         Log.e("Intentional", "Entering Spawn!")
-        TentAuth.auth(data)
         Log.e("Intentional", "Service finished!")
       }
       Log.e("Intentional", "got here...")

@@ -25,7 +25,7 @@ object Hawk_Headers {
   }
 
 
-  def build_headers_for_authentication(body: String, method: String, url: String) = {
+  def build_headers_after_authentication(body: String, method: String, url: String) = {
 
 
     val hawk_id = Temporary_Credentials.getAccess_token //access token is used as Hawk_Id in requests after auth

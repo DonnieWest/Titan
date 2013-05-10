@@ -16,7 +16,8 @@
         android:padding="5dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/text"
-        android:textColorLink="@color/text_link" />
+        android:textColorLink="@color/text_link"
+        android:text="To learn more about Titan and the tent protocol, visit here"/>
 
     <ScrollView
         android:layout_width="match_parent"

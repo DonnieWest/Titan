@@ -5,6 +5,7 @@ import net.liftweb.json._
 import java.net.URL
 import android.util.Log
 import com.donniewest.titan.Util.json_extractor
+import scala.util.Random
 
 
 object Registration {
@@ -25,10 +26,15 @@ object Registration {
 
 
   def Oauth() = {
+    val state = {
+      val random = new Random().nextInt()
+      if (random < 0) -random else random
+    }
+    val location = HttpRequest.get(Endpoints.getOauth_auth + "?client_id=" + Credentials.getClient_id + "&state=" + state).header("Location")
+//    val code_url = new URL(location)  These both might be relevant later, but for right now, titan:// is not
+//    val code = code_url.getQuery      a valid uri to create a new URL from. Gotta extract using other means
+    val code = location.split("code=")(1).split("&state=")(0)
 
-    val location = HttpRequest.get(Endpoints.getOauth_auth + "?client_id=" + Credentials.getClient_id + "&state=" + Creds.state).header("Location")
-    val code_url = new URL(location)     //ugliness, casting to extract Code from the location, not type safe!
-    val code = code_url.getQuery
     val json = "{\n  \"code\": \"%s\",\n  \"token_type\": \"https://tent.io/oauth/hawk-token\"\n}".format(code)
 
     val json_response = HttpRequest.post(Endpoints.getOauth_token).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauth_token)).contentType("application/json").send(json).body

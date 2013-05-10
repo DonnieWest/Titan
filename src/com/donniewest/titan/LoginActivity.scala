@@ -2,7 +2,6 @@ package com.donniewest.titan
 
 import com.actionbarsherlock.app.SherlockActivity
 import com.donniewest.titan.R
-import com.donniewest.titan.TentAuth
 import android.widget.{TextView, Button}
 import org.scaloid.common._
 import android.os.Bundle
@@ -19,17 +18,13 @@ class LoginActivity extends SherlockActivity with SActivity {
 
       spawn{
 
-        val hurl = find[TextView](R.id.et_password).getText.toString
+        val entity = find[TextView](R.id.et_password).getText.toString
         warn(hurl)
-/*        TentAuth.Register(hurl)
-        warn("Done with Registration!")
-        val redirection = TentAuth.build_url
-        warn(redirection)*/
-        val redirection = TentAuth.redirect_url(hurl)
-        error(redirection)
-        openUri(redirection)
-
-
+        Client.authenticate_with_server(entity)
+/*        error(redirection)
+        openUri(redirection)*/
+// The above ^ will be relevant when Tent 0.3 is released and the user has to go through the Oauth Flow. For now, nah
+         //need to start the activity to start posting and craziness!
 
 
       }
@@ -37,26 +32,4 @@ class LoginActivity extends SherlockActivity with SActivity {
 
   }
 
- /* def respond(text: String) = {
-
-    val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE).asInstanceOf[ConnectivityManager]
-    val networkInfo = connMgr.getActiveNetworkInfo()
-    if (networkInfo != null && networkInfo.isConnected) {
-
-      error("ABout to request the codez~!")
-
-      val code = HttpRequest.head(text).trustAllCerts().trustAllHosts().acceptEncoding(Creds.content).code()
-      error("The code is" + code.toString)
-      code
-
-
-    }
-
-    else {
-
-      toast("No connection or BIG ERROR!")
-      error("OH NOES!")
-      "NO!!!!!"
-    }
-  }*/
 }
