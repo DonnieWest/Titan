@@ -1,4 +1,4 @@
-package com.donniewest.titan
+package com.donniewest.titan.Authentication
 
 import com.github.kevinsawicki.http.HttpRequest
 import net.liftweb.json._
@@ -6,6 +6,7 @@ import java.net.URL
 import android.util.Log
 import com.donniewest.titan.Util.json_extractor
 import scala.util.Random
+import com.donniewest.titan.Authentication._
 
 
 object Registration {
@@ -37,7 +38,7 @@ object Registration {
 
     val json = "{\n  \"code\": \"%s\",\n  \"token_type\": \"https://tent.io/oauth/hawk-token\"\n}".format(code)
 
-    val json_response = HttpRequest.post(Endpoints.getOauth_token).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauth_token)).contentType("application/json").send(json).body
+    val json_response = parse(HttpRequest.post(Endpoints.getOauth_token).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauth_token)).contentType("application/json").send(json).body)
 
     Log.e("Error?", json_response.toString)
 

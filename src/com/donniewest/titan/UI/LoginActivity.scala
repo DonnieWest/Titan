@@ -1,7 +1,7 @@
-package com.donniewest.titan
+package com.donniewest.titan.UI
 
 import com.actionbarsherlock.app.SherlockActivity
-import com.donniewest.titan.R
+import com.donniewest.titan.{Client, R}
 import android.widget.{TextView, Button}
 import org.scaloid.common._
 import android.os.Bundle
@@ -19,7 +19,6 @@ class LoginActivity extends SherlockActivity with SActivity {
       spawn{
 
         val entity = find[TextView](R.id.et_password).getText.toString
-        warn(hurl)
         Client.authenticate_with_server(entity)
 /*        error(redirection)
         openUri(redirection)*/

@@ -1,4 +1,4 @@
-package com.donniewest.titan
+package com.donniewest.titan.Authentication
 
 import scala.util.Random
 import com.donniewest.titan.Util.Sign
@@ -15,7 +15,6 @@ object Hawk_Headers {
     val url_casted = new URL(url)   //Aha! Instantiate new URL, get pretty methods, type safe!
     val path = url_casted.getPath
     val host = url_casted.getHost
-//    val app_digest = "" //doesn't seem to be required. Remove later?
 
     val hash = Sign.Base64_and_HmacSha256("hawk.1.payload\napplication/json\n" + body, Credentials.getHawk_key)
     val mac = Sign.Base64_and_HmacSha256("hawk.1.header\n%d\n%s\n%s\n%s\n%s\n80\n%s\n\n%s\n\n".format(timestamp, nonce, method, path, host, hash, app), Credentials.getHawk_key) //according to the ruby library for Hawk for Tent, app id and app id digest aren't used here.

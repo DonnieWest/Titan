@@ -1,10 +1,11 @@
-package com.donniewest.titan
+package com.donniewest.titan.UI
 
 import android.os.Bundle
 import org.scaloid.common.SActivity
 import com.actionbarsherlock.app.SherlockActivity
 import android.util.Log
 import concurrent.ops._
+import com.donniewest.titan.R
 
 class TimelineActivity extends SherlockActivity with SActivity {
     override def onCreate(savedInstanceState: Bundle) {

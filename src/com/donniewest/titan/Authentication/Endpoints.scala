@@ -1,4 +1,5 @@
-package com.donniewest.titan
+package com.donniewest.titan.Authentication
+
 import scala.beans.BeanProperty
 
 object Endpoints {

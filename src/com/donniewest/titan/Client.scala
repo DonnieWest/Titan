@@ -1,6 +1,7 @@
 package com.donniewest.titan
 
 import com.github.kevinsawicki.http.HttpRequest
+import com.donniewest.titan.Authentication.{Registration, Hawk_Headers, Endpoints, Discover}
 
 
 object Client {

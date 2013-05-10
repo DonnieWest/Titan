@@ -1,4 +1,5 @@
-package com.donniewest.titan
+package com.donniewest.titan.Authentication
+
 import com.github.kevinsawicki.http.HttpRequest
 import net.liftweb.json._
 
