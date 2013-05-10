@@ -23,7 +23,8 @@ class LoginActivity extends SherlockActivity with SActivity {
 /*        error(redirection)
         openUri(redirection)*/
 // The above ^ will be relevant when Tent 0.3 is released and the user has to go through the Oauth Flow. For now, nah
-         //need to start the activity to start posting and craziness!
+        error("Do I get this far?")
+        startActivity[Post_Basic_Activity]
 
 
       }

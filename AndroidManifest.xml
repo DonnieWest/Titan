@@ -55,10 +55,11 @@
 
         </intent-filter>
         </activity>
+        <activity android:name=".UI.Post_Basic_Activity"/>
 
-<!--        <service
-            android:name=".Authorization.AuthService">
-        </service>-->
+        <!--        <service
+                    android:name=".Authorization.AuthService">
+                </service>-->
 
 
     </application>
