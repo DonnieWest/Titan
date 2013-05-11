@@ -7,7 +7,7 @@ import android.util.Log
 
 object Client {
 
-  def authenticate_with_server(entity: String) = {
+  def authenticate_with_server(entity: String)  {
     val tag = "auth"
 
 //    Log.e(tag, "Entering Auth")
@@ -27,6 +27,12 @@ object Client {
     val json = "{\"type\":\"https://tent.io/types/status/v0#\",\"content\":{\"text\":\"%s\"}}".format(content)
     val contentType = "application/vnd.tent.post.v0+json; type=\"https://tent.io/types/status/v0#\""
     HttpRequest.post(Endpoints.getNew_post).contentType(contentType).authorization(Hawk_Headers.build_headers_after_authentication(json,"POST",Endpoints.getNew_post, "application/vnd.tent.post.v0+json")).send(json).body
+
+  }
+
+  def retrieve_your_posts = {
+
+    HttpRequest.get(Endpoints.getPost_feed).accept("application/vnd.tent.posts-feed.v0+json").authorization(Hawk_Headers.build_headers_after_authentication("","GET",Endpoints.getPost_feed, "application/vnd.tent.post.v0+json")).body
 
   }
 
