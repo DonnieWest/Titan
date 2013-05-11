@@ -24,8 +24,9 @@ object Client {
 
   def post_send_basic(content: String) = {
 
-    val json = "{\n  \"type\": \"https://tent.io/types/status/v0#\",\n  \"content\": {\n    \"text\": \"%s\"\n  }\n}".format(content)
-    HttpRequest.post(Endpoints.getNew_post).contentType("application/vnd.tent.post.v0+json; type=\"https://tent.io/types/status/v0#\"").authorization(Hawk_Headers.build_headers_after_authentication(json,"POST",Endpoints.getNew_post)).send(json)
+    val json = "{\"type\":\"https://tent.io/types/status/v0#\",\"content\":{\"text\":\"%s\"}}".format(content)
+    val contentType = "application/vnd.tent.post.v0+json; type=\"https://tent.io/types/status/v0#\""
+    HttpRequest.post(Endpoints.getNew_post).contentType(contentType).authorization(Hawk_Headers.build_headers_after_authentication(json,"POST",Endpoints.getNew_post, "application/vnd.tent.post.v0+json")).send(json).body
 
   }
 

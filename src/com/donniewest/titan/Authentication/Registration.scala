@@ -42,7 +42,7 @@ object Registration {
     located.setInstanceFollowRedirects(false)
     val location = located.getHeaderField("Location")  //HAH! On computer, HttpUrlConnection does not follow redirects. Android does. HttpRequest, which is based on HttpUrlconnection, can't turn off redirects
 
-    Log.e(tag, "yanked code location which is " + location)
+//    Log.e(tag, "yanked code location which is " + location)
 
     val code = location.split("code=")(1).split("&state=")(0)
 

@@ -16,7 +16,7 @@ object Hawk_Headers {
     val path = url_casted.getPath
     val host = url_casted.getHost
 
-    val hash = Sign.Base64_and_HmacSha256("hawk.1.payload\napplication/json\n" + body, Credentials.getHawk_key)
+    val hash = Sign.Base64_and_Sha256_Digest("hawk.1.payload\napplication/json\n" + body)
     val mac = Sign.Base64_and_HmacSha256("hawk.1.header\n%d\n%s\n%s\n%s\n%s\n80\n%s\n\n%s\n\n".format(timestamp, nonce, method, path, host, hash, app), Credentials.getHawk_key) //according to the ruby library for Hawk for Tent, app id and app id digest aren't used here.
 
     "Hawk id=\"%s\", mac=\"%s\", ts=\"%d\", nonce=\"%s\", hash=\"%s\", app=\"%s\"".format(hawk_id, mac, timestamp, nonce, hash, app)
@@ -24,7 +24,7 @@ object Hawk_Headers {
   }
 
 
-  def build_headers_after_authentication(body: String, method: String, url: String) = {
+  def build_headers_after_authentication(body: String, method: String, url: String, contenttype: String) = {
 
 
     val hawk_id = Temporary_Credentials.getAccess_token //access token is used as Hawk_Id in requests after auth
@@ -35,9 +35,8 @@ object Hawk_Headers {
     val path = url_casted.getPath
     val host = url_casted.getHost
 
-    val hash = Sign.Base64_and_HmacSha256("hawk.1.payload\napplication/json\n" + body, Temporary_Credentials.getHawk_key)
-    val mac = Sign.Base64_and_HmacSha256("hawk.1.header\n%d\n%s\n%s\n%s\n%s\n80\n%s\n\n%s\n\n".format(timestamp, nonce, method, path, host, hash, app), Temporary_Credentials.getHawk_key) //according to the ruby library for Hawk for Tent, app id and app id digest aren't used here.
-
+    val hash = Sign.Base64_and_Sha256_Digest("hawk.1.payload\n%s\n%s\n".format(contenttype, body))
+    val mac = Sign.Base64_and_HmacSha256("hawk.1.header\n%d\n%s\n%s\n%s\n%s\n80\n%s\n\n%s\n\n".format(timestamp, nonce, method, path, host, hash, app), Temporary_Credentials.getHawk_key)
     "Hawk id=\"%s\", mac=\"%s\", ts=\"%d\", nonce=\"%s\", hash=\"%s\", app=\"%s\"".format(hawk_id, mac, timestamp, nonce, hash, app)
 
   }
