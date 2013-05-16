@@ -20,8 +20,7 @@ class LoginActivity extends SherlockActivity with SActivity {
 
         val entity = find[TextView](R.id.et_password).getText.toString
         Client.authenticate_with_server(entity)
-/*        error(redirection)
-        openUri(redirection)*/
+//        openUri(redirection)
 // The above ^ will be relevant when Tent 0.3 is released and the user has to go through the Oauth Flow. For now, nah
         error("Do I get this far?")
         startActivity[Post_Basic_Activity]
