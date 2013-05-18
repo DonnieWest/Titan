@@ -7,4 +7,5 @@ object Constants extends BaseColumns {     //TODO: Checkout if this can be imple
 
   val TABLE_NAME = "Post_Feed"
 
+
 }

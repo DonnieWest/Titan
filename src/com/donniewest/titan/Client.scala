@@ -2,23 +2,20 @@ package com.donniewest.titan
 
 import com.github.kevinsawicki.http.HttpRequest
 import com.donniewest.titan.Authentication.{Registration, Hawk_Headers, Endpoints, Discover}
-import android.util.Log
+import com.donniewest.titan.Sqlite._
+import net.liftweb.json._
+import android.content.ContentValues
+
 
 
 object Client {
 
   def authenticate_with_server(entity: String)  {
-    val tag = "auth"
 
-//    Log.e(tag, "Entering Auth")
     val server = Discover.find_server(entity)
-//    Log.e(tag, "finished discovery of server which is " + server)
     Discover.extract_endpoints(server)
-//    Log.e(tag, "extracted endpoints")
     Registration.register()
-//    Log.e(tag, "registered, getting hawk creds")
     Registration.Oauth()
-//    Log.e(tag, "finished!")
 
   }
 
@@ -31,8 +28,34 @@ object Client {
   }
 
   def retrieve_your_posts = {
+    //TODO: make method capable of handling various post numbers, maybe even post types?
+    val json_post_feed = parse(HttpRequest.get(Endpoints.getPost_feed).accept("application/vnd.tent.posts-feed.v0+json").authorization(Hawk_Headers.build_headers_after_authentication("","GET",Endpoints.getPost_feed, "application/vnd.tent.post.v0+json")).body)
+    case class App(id: String, name: String, url: String) {
 
-    HttpRequest.get(Endpoints.getPost_feed).accept("application/vnd.tent.posts-feed.v0+json").authorization(Hawk_Headers.build_headers_after_authentication("","GET",Endpoints.getPost_feed, "application/vnd.tent.post.v0+json")).body
+      def getId = id
+      def getName = name
+      def getUrl = url
+
+    }
+    case class Content(text: String) {
+
+      def getText = text
+
+    }
+
+
+    case class Post(app: App , content: Content){
+
+      def getApp = app
+      def getContent = content
+
+    }
+
+    //Right now, running json_post_feed.extract[Post] or List[Post] or etc. is failing. I'm halfway there on the structure, just not quite
+
+    val mDbHelper = new Feed_database(getContext)
+    val db = mDbHelper.getWritableDatabase
+    val values = new ContentValues()
 
   }
 
