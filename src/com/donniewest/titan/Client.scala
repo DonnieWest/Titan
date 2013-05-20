@@ -30,11 +30,9 @@ object Client {
   def retrieve_your_posts = {
     //TODO: make method capable of handling various post numbers, maybe even post types?
     val json_post_feed = parse(HttpRequest.get(Endpoints.getPost_feed).accept("application/vnd.tent.posts-feed.v0+json").authorization(Hawk_Headers.build_headers_after_authentication("","GET",Endpoints.getPost_feed, "application/vnd.tent.post.v0+json")).body)
-    case class App(id: String, name: String, url: String) {
+    case class App(name: String, url: String) {
 
-      def getId = id
-      def getName = name
-      def getUrl = url
+      def getInfo = List(name, url)
 
     }
     case class Content(text: String) {
@@ -46,16 +44,20 @@ object Client {
 
     case class Post(app: App , content: Content){
 
-      def getApp = app
-      def getContent = content
+      def getInfo = List(app.getInfo map((i: String) => i ), content.getText)
 
     }
 
-    //Right now, running json_post_feed.extract[Post] or List[Post] or etc. is failing. I'm halfway there on the structure, just not quite
+    case class Data(data: List[Post]) {
 
+      def getData = List(data map((i: Post) => List(i.getInfo) ))     //TODO: make this return a structured piece of Data without all the lists...
+
+    }
+
+    json_post_feed.extract[Data]
     val mDbHelper = new Feed_database(getContext)
     val db = mDbHelper.getWritableDatabase
-    val values = new ContentValues()
+    val values = new ContentValues
 
   }
 
