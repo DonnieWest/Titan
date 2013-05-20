@@ -39,6 +39,7 @@ object Hawk_Headers {
     val mac = Sign.Base64_and_HmacSha256("hawk.1.header\n%d\n%s\n%s\n%s\n%s\n80\n%s\n\n%s\n\n".format(timestamp, nonce, method, path, host, hash, app), Temporary_Credentials.getHawk_key)
     "Hawk id=\"%s\", mac=\"%s\", ts=\"%d\", nonce=\"%s\", hash=\"%s\", app=\"%s\"".format(hawk_id, mac, timestamp, nonce, hash, app)
 
+    //TODO: Fix this so it handles queries in the URL
   }
 
 }
