@@ -13,7 +13,7 @@ object Hawk_Headers {
     val nonce = Random.alphanumeric.take(8).mkString
     val timestamp =  (System.currentTimeMillis() / 1000).asInstanceOf[Int]
     val url_casted = new URL(url)   //Aha! Instantiate new URL, get pretty methods, type safe!
-    val path = url_casted.getPath
+    val path = url_casted.getPath + "?" + url_casted.getQuery
     val host = url_casted.getHost
 
     val hash = Sign.Base64_and_Sha256_Digest("hawk.1.payload\napplication/json\n" + body)
@@ -32,7 +32,7 @@ object Hawk_Headers {
     val nonce = Random.alphanumeric.take(8).mkString
     val timestamp =  (System.currentTimeMillis() / 1000).asInstanceOf[Int]
     val url_casted = new URL(url)   //Aha! Instantiate new URL, get pretty methods, type safe!
-    val path = url_casted.getPath
+    val path = url_casted.getPath + "?" + url_casted.getQuery
     val host = url_casted.getHost
 
     val hash = Sign.Base64_and_Sha256_Digest("hawk.1.payload\n%s\n%s\n".format(contenttype, body))

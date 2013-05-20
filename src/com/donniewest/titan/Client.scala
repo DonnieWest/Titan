@@ -54,6 +54,8 @@ object Client {
 
     }
 
+    implicit val formats = DefaultFormats
+
     json_post_feed.extract[Data]
     val mDbHelper = new Feed_database(getContext)
     val db = mDbHelper.getWritableDatabase
