@@ -44,13 +44,13 @@ object Client {
 
     case class Post(app: App , content: Content){
 
-      def getInfo = List(app.getInfo map((i: String) => i ), content.getText)
+      def getInfo = List(app.getInfo(0),app.getInfo(1), content.getText)
 
     }
 
     case class Data(data: List[Post]) {
 
-      def getData = List(data map((i: Post) => List(i.getInfo) ))     //TODO: make this return a structured piece of Data without all the lists...
+      def getData = List(data.map(i => List(i.getInfo(0), i.getInfo(1), i.getInfo(2))))     //TODO: make this return a structured piece of Data without all the lists...
 
     }
 
