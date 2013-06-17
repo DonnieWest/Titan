@@ -5,7 +5,7 @@ import com.donniewest.titan.Authentication.{Registration, Hawk_Headers, Endpoint
 import com.donniewest.titan.Sqlite._
 import net.liftweb.json._
 import android.content.ContentValues
-
+import scala.collection.mutable
 
 
 object Client {
@@ -88,13 +88,13 @@ Case classes implemented:
 
     case class Status_Post(app: App , content: Content, mentions: Mentions){
 
-      def getInfo = List(app.getInfo(0),app.getInfo(1), content.getText, mentions.getMentions)    //TODO: Convert to Hashmap, include the rest of this craziness
+      def getInfo = List(app.getInfo(0), app.getInfo(1), content.getText, mentions.getMentions)    //TODO: Convert to Hashmap, include the rest of this craziness
 
     }
 
     case class Status_Posts(data: List[Status_Post]) {
 
-      def getData = data.map(i => List(i.getInfo(0), i.getInfo(1), i.getInfo(2)))    //TODO: Make this a list of HashMaps
+      def getData = data.map(i => mutable.HashMap("name" -> i.getInfo(0), "url" -> i.getInfo(1), "content" -> i.getInfo(2), "mentions" -> i.getInfo(3)))    //TODO: Make this a list of HashMaps
 
     }
 
