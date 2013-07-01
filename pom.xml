@@ -9,7 +9,7 @@
     <artifactId>com-donniewest-titan</artifactId>
     <packaging>apk</packaging>
     <name>Titan</name>
-    <url>https://github.com.donniewest.titan</url>
+    <url>https://github.com/donniewest/titan</url>
 
     <properties>
         <abs.version>4.3.0</abs.version>
@@ -57,117 +57,16 @@
             <type>apklib</type>
         </dependency>
     </dependencies>
-    <build>
-	<sourceDirectory>/home/igneo676/Dropbox/Apps/Titan/src</sourceDirectory>
-        <plugins>
-            <plugin>
-                <groupId>net.alchim31.maven</groupId>
-                <artifactId>scala-maven-plugin</artifactId>
-                <version>3.1.5</version>
-                <extensions>true</extensions>
-            </plugin>
-            <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                <artifactId>android-maven-plugin</artifactId>
-                <version>3.6.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <sdk>
-                        <platform>16</platform>
-                    </sdk>
-                    <proguard>
-                        <skip>false</skip>
-                        <config>/home/igneo676/Dropbox/Apps/Titan/proguard.cfg</config>
-                    </proguard>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <profiles>
         <profile>
             <id>release</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>net.alchim31.maven</groupId>
-                            <artifactId>scala-maven-plugin</artifactId>
-                            <version>3.1.5</version>
-                            <extensions>true</extensions>
-                        </plugin>
-                        <plugin>
-                            <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                            <artifactId>android-maven-plugin</artifactId>
-                            <version>3.6.0</version>
-                            <extensions>true</extensions>
-                            <configuration>
-                                <sdk>
-                                    <platform>16</platform>
-                                </sdk>
-                                <!--<undeployBeforeDeploy>true</undeployBeforeDeploy>-->
-                                <proguard>
-                                    <skip>false</skip>
-                                    <config>/home/igneo676/Dropbox/Apps/Titan/proguard.cfg</config>
-                                </proguard>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
+            <!--<sourceDirectory>/home/igneo676/Dropbox/Apps/Titan/src</sourceDirectory>-->
                 <plugins>
-                    <plugin>
-                        <groupId>net.alchim31.maven</groupId>
-                        <artifactId>scala-maven-plugin</artifactId>
-                        <version>3.1.5</version>
-                        <executions>
-                            <execution>
-                                <id>scala-compile-first</id>
-                                <phase>process-resources</phase>
-                                <goals>
-                                    <goal>add-source</goal>
-                                    <goal>compile</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDir>/home/igneo676/Dropbox/Apps/Titan/target/classes/com/donniewest/titan</outputDir>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>cc</id>
-                                <goals>
-                                    <goal>cc</goal>
-                                </goals>
-                                <phase>compile</phase>
-                                <configuration>
-                                    <useFsc>true</useFsc>
-                                    <once>true</once>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>scala-test-compile</id>
-                                <phase>process-test-resources</phase>
-                                <goals>
-                                    <goal>testCompile</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jarsigner-plugin</artifactId>
+                        <version>1.2</version>
                         <executions>
                             <execution>
                                 <id>signing</id>
@@ -179,7 +78,10 @@
                                 <inherited>true</inherited>
                                 <configuration>
                                     <removeExistingSignatures>true</removeExistingSignatures>
-                                    <archiveDirectory />
+                                    <archiveDirectory></archiveDirectory>
+                                    <includes>
+                                        <include>target/*.apk</include>
+                                    </includes>
                                     <!-- These values can either be placed directly into to file below, or provided
                                     via the command line during the build process as such:
                                      "mvn clean release -Dbootstrap.sign.keystore=foobar" ... etc.
@@ -195,30 +97,19 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- the signed apk then needs to be zipaligned -->
                     <plugin>
                         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                         <artifactId>android-maven-plugin</artifactId>
                         <inherited>true</inherited>
                         <configuration>
-                             <sdk>
-                                <platform>16</platform>
-                            </sdk>
                             <sign>
                                 <debug>false</debug>
                             </sign>
-                            <zipalign>
-                                <verbose>true</verbose>
-                                <outputApk>${project.build.directory}/${project.artifactId}-${project.version}-signed-aligned.apk</outputApk>
-                            </zipalign>
-                            <manifest>
-                                <debuggable>false</debuggable>
-                            </manifest>
                         </configuration>
                         <executions>
                             <execution>
                                 <id>alignApk</id>
-                                <phase>package</phase>
+                                <phase>install</phase>
                                 <goals>
                                     <goal>zipalign</goal>
                                 </goals>
@@ -227,29 +118,96 @@
                     </plugin>
                 </plugins>
             </build>
-            <repositories>
-                <repository>
-                    <id>sonatype.release</id>
-                    <name>Sonatype maven release repository</name>
-                    <url>https://oss.sonatype.org/content/repositories/releases/</url>
-                    <snapshots><enabled>false</enabled></snapshots>
-                </repository>
-                <repository>
-                    <id>sonatype.snapshot</id>
-                    <name>Sonatype maven snapshot repository</name>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                    <snapshots>
-                        <updatePolicy>daily</updatePolicy>
-                    </snapshots>
-                </repository>
-                <repository>
-                    <id>sonatype-nexus-snapshots</id>
-                    <url>https://oss.sonatype.org/content/groups/public/</url>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                </repository>
-            </repositories>
         </profile>
     </profiles>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+                    <assetsDirectory>${project.basedir}/assets</assetsDirectory>
+                    <resourceDirectory>${project.basedir}/res</resourceDirectory>
+                    <nativeLibrariesDirectory>${project.basedir}/lib</nativeLibrariesDirectory>
+                    <sdk>
+                        <platform>16</platform>
+                    </sdk>
+                    <dex>
+                        <jvmArguments>
+                            <jvmArgument>-Xmx1024M</jvmArgument>
+                            <jvmArgument>-XX:MaxPermSize=512M</jvmArgument>
+                        </jvmArguments>
+                    </dex>
+                    <proguard>
+                        <skip>false</skip>
+                        <config>proguard.cfg</config>
+                        <jvmArguments>
+                            <jvmArgument>-Xmx1024M</jvmArgument>
+                        </jvmArguments>
+                    </proguard>
+                </configuration>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <version>2.15.2</version>
+                <configuration>
+                    <scalaVersion>${scala.version}</scalaVersion>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/com/donniewest/titan</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <version>2.15.2</version>
+                <configuration>
+                    <scalaVersion>${scala.version}</scalaVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

@@ -3,7 +3,6 @@ package com.donniewest.titan.Authentication
 import com.github.kevinsawicki.http.HttpRequest
 import net.liftweb.json._
 
-
 object Discover {
 
   def find_server(entity: String) = {
