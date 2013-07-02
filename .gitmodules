@@ -1,6 +1,0 @@
-[submodule "libs/sugar"]
-	path = libs/sugar
-	url = git://github.com/satyan/sugar.git
-[submodule "libs/play-json"]
-	path = libs/play-json
-	url = git://github.com/mandubian/play-json-alone.git
