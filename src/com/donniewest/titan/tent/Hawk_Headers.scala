@@ -9,7 +9,7 @@ object Hawk_Headers {
   def build_headers(body: String, method: String, url: String) = {
 
     val hawk_id = Temp_Credentials.getHawk_id
-    val app = Temp_Credentials.getClient_id
+    val app = Credentials.getClient_id
     val nonce = Random.alphanumeric.take(8).mkString
     val timestamp =  (System.currentTimeMillis() / 1000).asInstanceOf[Int]
     val url_casted = new URL(url)   //Aha! Instantiate new URL, get pretty methods, type safe!
@@ -28,7 +28,7 @@ object Hawk_Headers {
 
 
     val hawk_id = Credentials.getAccess_token //access token is used as Hawk_Id in requests after auth
-    val app = Temp_Credentials.getClient_id   //I believe the Client_ID from earlier still defines this app. I need to store this in database as well
+    val app = Credentials.getClient_id   //I believe the Client_ID from earlier still defines this app. I need to store this in database as well
     val nonce = Random.alphanumeric.take(8).mkString
     val timestamp =  (System.currentTimeMillis() / 1000).asInstanceOf[Int]
     val url_casted = new URL(url)   //Aha! Instantiate new URL, get pretty methods, type safe!

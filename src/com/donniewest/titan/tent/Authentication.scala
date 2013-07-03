@@ -46,14 +46,15 @@ object Authentication {
 
       Temp_Credentials.setHawk_algorithm(json_extractor.extract(json_hawk_creds, "hawk_algorithm"))
       Temp_Credentials.setHawk_key(json_extractor.extract(json_hawk_creds, "hawk_key"))
-      Temp_Credentials.setClient_id(compact(render(json_hawk_creds \ "post" \ "mentions" \"post")).replace("\"",""))
+      //Client_ID must be stored and is not a temporary thing, others are
+      Credentials.setClient_id(compact(render(json_hawk_creds \ "post" \ "mentions" \"post")).replace("\"",""))
       Temp_Credentials.setHawk_id(compact(render(json_hawk_creds \ "post" \ "id")).replace("\"",""))  //I can extract this /nicer/ with the methods in lift-json, but I'm lazy right now
     }
 
     def Auth() {
 
 
-      val locate = new URL(Endpoints.getOauth_auth + "?client_id=" + Temp_Credentials.getClient_id + "&state=" + state)
+      val locate = new URL(Endpoints.getOauth_auth + "?client_id=" + Credentials.getClient_id + "&state=" + state)
       val located = locate.openConnection().asInstanceOf[HttpURLConnection]
       located.setInstanceFollowRedirects(false)
       val location = located.getHeaderField("Location")  //HAH! On computer, HttpUrlConnection does not follow redirects. Android does. HttpRequest, which is based on HttpUrlconnection, can't turn off redirects
