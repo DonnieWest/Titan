@@ -3,12 +3,12 @@ package tent
 object identity_json {
 
 
-  val registration = """ {
+  val registration = """{
   "type": "https://tent.io/types/app/v0#",
   "content": {
     "name": "Titan",
     "url": "https://tent.donniewest.com",
-    "post_types": {
+    "types": {
     "read": [
     "https://tent.io/types/app/v0"
     ],
@@ -22,6 +22,6 @@ object identity_json {
   "permissions": {
     "public": false
   }
-} """
+}"""
 
 }

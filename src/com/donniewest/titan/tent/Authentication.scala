@@ -25,9 +25,9 @@ object Authentication {
       Endpoints.setOauth_auth(json_extractor.extract(endpoints_in_json, "oauth_auth"))
       Endpoints.setEntity(compact(render(endpoints_in_json \ "post" \ "content" \  "entity")).replace("\"","")) //returns two different entity locations, trimming it down!
       Endpoints.setOauth_token(json_extractor.extract(endpoints_in_json, "oauth_token"))
-      Endpoints.setPost(json_extractor.extract(endpoints_in_json, "post"))
-      Endpoints.setPost_feed(json_extractor.extract(endpoints_in_json, "posts_feed"))
       Endpoints.setNew_post(json_extractor.extract(endpoints_in_json, "new_post"))
+      Endpoints.setPost_feed(json_extractor.extract(endpoints_in_json, "posts_feed"))
+      Endpoints.setPost_feed(compact(render(endpoints_in_json \ "post" \ "content" \ "servers" \ "urls" \ "post")).replace("\"",""))
       Endpoints.setAttachment(json_extractor.extract(endpoints_in_json, "attachment"))
       Endpoints.setPost_attachment(json_extractor.extract(endpoints_in_json, "post_attachment"))
       Endpoints.setBatch(json_extractor.extract(endpoints_in_json, "batch"))
