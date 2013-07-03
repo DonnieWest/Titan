@@ -46,7 +46,7 @@ object Authentication {
 
       Temp_Credentials.setHawk_algorithm(json_extractor.extract(json_hawk_creds, "hawk_algorithm"))
       Temp_Credentials.setHawk_key(json_extractor.extract(json_hawk_creds, "hawk_key"))
-      Temp_Credentials.setClient_id(json_extractor.extract(json_hawk_creds, "post"))
+      Temp_Credentials.setClient_id(compact(render(json_hawk_creds \ "post" \ "mentions" \"post")).replace("\"",""))
       Temp_Credentials.setHawk_id(compact(render(json_hawk_creds \ "post" \ "id")).replace("\"",""))  //I can extract this /nicer/ with the methods in lift-json, but I'm lazy right now
     }
 
