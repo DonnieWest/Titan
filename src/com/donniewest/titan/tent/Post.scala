@@ -17,7 +17,7 @@ object Post {
   def retrieve_feed() {
 
     //TODO: make method capable of handling various post numbers, maybe even post types?
-    val json_post_feed = parse(HttpRequest.get(Endpoints.getPost_feed).accept("application/vnd.tent.posts-feed.v0+json").authorization(Hawk_Headers.build_headers_after_authentication("","GET",Endpoints.getPost_feed, "application/vnd.tent.post.v0+json")).body)
+    val json_post_feed = parse(HttpRequest.get(Endpoints.getPost_feed).accept("application/vnd.tent.posts-feed.v0+json").authorization(Hawk_Headers.build_headers("","GET",Endpoints.getPost_feed, "application/vnd.tent.post.v0+json")).body)
 
     case class App(name: String, url: String) {
 
