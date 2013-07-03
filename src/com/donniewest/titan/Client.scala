@@ -1,8 +1,7 @@
 package com.donniewest.titan
 
 import com.github.kevinsawicki.http.HttpRequest
-import com.donniewest.titan.Authentication.{Registration, Hawk_Headers, Endpoints, Discover}
-import com.donniewest.titan.Sqlite._
+import tent.{Hawk_Headers, Endpoints, Authentication}
 import net.liftweb.json._
 import android.content.ContentValues
 import scala.collection.mutable
@@ -12,10 +11,7 @@ object Client {
 
   def authenticate_with_server(entity: String)  {
 
-    val server = Discover.find_server(entity)
-    Discover.extract_endpoints(server)
-    Registration.register()
-    Registration.Oauth()
+    Authentication.login(entity)
 
   }
 
@@ -53,12 +49,6 @@ Case classes implemented:
     case class Mentions(mentions: List[String]) {
 
       def getMentions = mentions
-
-    }
-
-    object Mentions {
-
-      def apply: Mentions = Mentions(List(""))
 
     }
 

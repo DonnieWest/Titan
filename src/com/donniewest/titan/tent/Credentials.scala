@@ -1,9 +1,9 @@
-package com.donniewest.titan.Authentication
+package tent
 
 import scala.beans.BeanProperty
 
 
-object Temporary_Credentials {
+object Credentials {
 
   @BeanProperty var access_token = ""
   @BeanProperty var hawk_key = ""

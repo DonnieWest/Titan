@@ -1,4 +1,4 @@
-package com.donniewest.titan.Authentication
+package tent
 
 import scala.beans.BeanProperty
 

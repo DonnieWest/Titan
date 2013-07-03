@@ -1,6 +1,6 @@
-package com.donniewest.titan.Authentication
+package tent
 
-object Json {
+object identity_json {
 
 
   val registration = """ {
