@@ -8,7 +8,7 @@ object Post {
 
   def send_post(text: String) {
 
-    val json = "{\"type\":\"https://tent.io/types/status/v0#\",\"content\":{\"text\":\"%s\"}}".format(content)
+    val json = "{\"type\":\"https://tent.io/types/status/v0#\",\"content\":{\"text\":\"%s\"}}".format(text)
     val contentType = "application/vnd.tent.post.v0+json; type=\"https://tent.io/types/status/v0#\""
     HttpRequest.post(Endpoints.getNew_post).contentType(contentType).authorization(Hawk_Headers.build_headers_after_authentication(json,"POST",Endpoints.getNew_post, "application/vnd.tent.post.v0+json")).send(json).body
 
@@ -71,8 +71,6 @@ object Post {
     implicit val formats = DefaultFormats
 
     json_post_feed.extract[Status_Posts]
-
-  }
 
   }
 

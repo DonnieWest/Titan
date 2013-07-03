@@ -24,5 +24,5 @@ object Client {
   def retrieve_feed = {
 
   Post.retrieve_feed()
-
+  }
 }

@@ -1,9 +1,8 @@
 package tent
 
 import scala.util.Random
-import com.donniewest.titan.Util.Sign
+import Util.Sign
 import java.net.URL
-import com.donniewest.titan.Authentication.Credentials
 
 object Hawk_Headers {
 

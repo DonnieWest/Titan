@@ -1,4 +1,4 @@
-package com.donniewest.titan.Util
+package Util
 
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec

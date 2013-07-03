@@ -2,11 +2,9 @@ package tent
 
 import net.liftweb.json._
 import com.github.kevinsawicki.http.HttpRequest
-import com.donniewest.titan.Authentication.{Credentials, Endpoints}
 import scala.util.Random
 import java.net.{HttpURLConnection, URL}
 import com.donniewest.titan.Util.json_extractor
-
 
 object Authentication {
 
@@ -49,7 +47,7 @@ object Authentication {
       Temp_Credentials.setHawk_algorithm(json_extractor.extract(json_hawk_creds, "hawk_algorithm"))
       Temp_Credentials.setHawk_key(json_extractor.extract(json_hawk_creds, "hawk_key"))
       Temp_Credentials.setClient_id(json_extractor.extract(json_hawk_creds, "post"))
-      Temp_Credentials.setHawk_id(compact(render(json_hawk_creds \ "post" \ "id").replace("\"","")))  //I can extract this /nicer/ with the methods in lift-json, but I'm lazy right now
+      Temp_Credentials.setHawk_id(compact(render(json_hawk_creds \ "post" \ "id")).replace("\"",""))  //I can extract this /nicer/ with the methods in lift-json, but I'm lazy right now
     }
 
     def Auth() {
@@ -74,7 +72,7 @@ object Authentication {
     extract_endpoints()
     register()
     Auth()
-    True
+    true
 
 
   }
