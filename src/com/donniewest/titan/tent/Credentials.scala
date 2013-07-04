@@ -9,5 +9,5 @@ object Credentials {
   @BeanProperty var hawk_key = ""
   @BeanProperty var hawk_algorithm = ""
   @BeanProperty var token_type = ""
-  @BeanProperty var client_ID = ""
+  @BeanProperty var client_id = ""
 }

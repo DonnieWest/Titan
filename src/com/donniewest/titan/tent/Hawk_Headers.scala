@@ -6,13 +6,7 @@ import java.net.URL
 
 object Hawk_Headers {
 
-  def build_headers(body: String, method: String, url: String, content_type: String, is_temporary: Boolean) = {
-
-    //I'm lazy, want to explicitly state whether or not this is temporary
-    def this(body: String, method: String, url: String, contenttype: String) = this(body, method, url, contenttype, false)
-
-    //If I don't explicitly state a content type, it's probably because I'm both authenticating, and lazy
-    def this(body: String, method: String, url: String) = this(body, method, url, "application/json", true)
+  def build_headers(body: String, method: String, url: String, content_type: String = "application/json", is_temporary: Boolean = false) = {
 
     val hawk_id = if (is_temporary) Temp_Credentials.getHawk_id else Credentials.getAccess_token //access token is used as Hawk_Id in requests after auth
     val app = Credentials.getClient_id   //I believe the Client_ID from earlier still defines this app. I need to store this in database as well
