@@ -62,7 +62,7 @@ object Authentication {
 
       val json = "{\n  \"code\": \"%s\",\n  \"token_type\": \"https://tent.io/oauth/hawk-token\"\n}".format(code)
 
-      val json_response = parse(HttpRequest.post(Endpoints.getOauth_token).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauth_token)).contentType("application/json").send(json).body)
+      val json_response = parse(HttpRequest.post(Endpoints.getOauth_token).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauth_token, true)).contentType("application/json").send(json).body)
       Credentials.setAccess_token(json_extractor.extract(json_response,"access_token"))
       Credentials.setHawk_algorithm(json_extractor.extract(json_response,"hawk_algorithm"))
       Credentials.setHawk_key(json_extractor.extract(json_response,"hawk_key"))
