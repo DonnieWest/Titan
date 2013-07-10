@@ -2,7 +2,6 @@ package tent
 
 import com.github.kevinsawicki.http.HttpRequest
 import net.liftweb.json._
-import scala.collection.mutable
 
 object Post {
 
@@ -18,16 +17,10 @@ object Post {
 
     //TODO: make method capable of handling various post numbers, maybe even post types?
     val json_post_feed = parse(HttpRequest.get(Endpoints.getPost_feed + "?types=https%3A%2F%2Ftent.io%2Ftypes%status%2Fv0%23").accept("application/vnd.tent.posts-feed.v0+json").authorization(Hawk_Headers.build_headers("","GET", Endpoints.getPost_feed + "?types=https%3A%2F%2Ftent.io%2Ftypes%status%2Fv0%23", false , "application/vnd.tent.post.v0+json")).body)
+     //bizarrely, this returns not only Status Posts but also Credential posts? Check into if this is a Tent side bug or me
+    case class App(id: String, name: String, url: String) {
 
-    case class App(app: List[String]) {
-
-      def getInfo = app
-
-    }
-
-    case class Mentions(mentions: List[String]) {
-
-      def getMentions = mentions
+      def getInfo = Map("id" -> id, "name" -> name, "url" -> url)
 
     }
 
@@ -38,39 +31,21 @@ object Post {
 
     }
 
-    case class ID(id: String) {
+    case class Post(app: App , content: Content, entity: String, id: String, published_at: String, `type`: String){
 
-      def getId = id //TODO: Test. Make sure it doesn't extract both the Post ID and the Post version ID
+      def getInfo = Map("App" -> app.getInfo, "content" -> content.getText, "entity" -> entity, "id" -> id, "published" -> published_at, "type" -> `type`)
+    }
+
+    case class Status_Posts(posts: List[Post]){
+
+      def getPosts = posts
 
     }
 
-    case class Published(published_at: BigInt) {
-
-      def getTime = published_at
-
-    }
-
-    case class Type(`type`: String) {
-
-      def getType = `type`
-
-    }
-
-    case class Status_Post(app: App , content: Content, mentions: Mentions){
-
-      def getInfo = List(app.getInfo, content.getText, mentions.getMentions)    //TODO: Convert to Hashmap, include the rest of this craziness
-
-    }
-
-    case class Status_Posts(data: List[Status_Post]) {
-
-      def getData = data.map(i => mutable.HashMap("app" -> i.getInfo, "content" -> i.getInfo(2), "mentions" -> i.getInfo(3)))    //TODO: Make this a list of HashMaps
-
-    }
 
     implicit val formats = DefaultFormats
 
-    json_post_feed.extract[Status_Posts]
+    json_post_feed.extract[Status_Posts].getPosts
 
   }
 
