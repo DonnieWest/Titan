@@ -1,7 +1,8 @@
-package com.donniewest.titan.UI
+package UI
 
+import tent.Client
 import com.actionbarsherlock.app.SherlockActivity
-import com.donniewest.titan.{Client, R}
+import com.donniewest.titan.R
 import android.widget.{TextView, Button}
 import org.scaloid.common._
 import android.os.Bundle

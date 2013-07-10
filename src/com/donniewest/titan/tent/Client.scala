@@ -1,11 +1,6 @@
-package com.donniewest.titan
+package tent
 
-import com.github.kevinsawicki.http.HttpRequest
-import tent.{Post, Hawk_Headers, Endpoints, Authentication}
-import net.liftweb.json._
-import android.content.ContentValues
-import scala.collection.mutable
-
+import tent.{Post, Authentication}
 
 object Client {
 
