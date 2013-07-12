@@ -2,6 +2,7 @@ package tent
 
 import com.github.kevinsawicki.http.HttpRequest
 import net.liftweb.json._
+import DB.Posts
 
 object Post {
 
@@ -14,7 +15,7 @@ object Post {
   }
 
   def retrieve_feed() {
-
+    //returns true if feed has been retrieved, for now
     //TODO: make method capable of handling various post numbers, maybe even post types?
     val json_post_feed = parse(HttpRequest.get(Endpoints.getPost_feed + "?types=https%3A%2F%2Ftent.io%2Ftypes%status%2Fv0%23").accept("application/vnd.tent.posts-feed.v0+json").authorization(Hawk_Headers.build_headers("","GET", Endpoints.getPost_feed + "?types=https%3A%2F%2Ftent.io%2Ftypes%status%2Fv0%23", false , "application/vnd.tent.post.v0+json")).body)
      //bizarrely, this returns not only Status Posts but also Credential posts? Check into if this is a Tent side bug or me
@@ -35,8 +36,6 @@ object Post {
 
     case class Post(app: App , content: Content, entity: String, id: String, published_at: String, `type`: String){
 
-      val app_info = app.getInfo
-
       def getInfo = Map(
         "app_name" -> app.getName,
         "app_url" -> app.getURL,
@@ -47,7 +46,7 @@ object Post {
         "published" -> published_at,
         "type" -> `type`)
 
-      //maybe convert this into a series of methods that retrieve this information?
+      //maybe convert this into a series of methods that retrieve this information? Starting to think Maps are inefficient
     }
 
     case class Status_Posts(posts: List[Post]){
@@ -59,7 +58,15 @@ object Post {
 
     implicit val formats = DefaultFormats
 
-    json_post_feed.extract[Status_Posts].getPosts
+    val post_feed = json_post_feed.extract[Status_Posts].getPosts
+    post_feed.foreach{i:Post =>
+      val info = i.getInfo
+      val DB_entry = new Posts(info("app_name"), info("app_url"), info("app_id"), info("content"), info("entity"), info("id"), info("published"), info("type"))
+      DB_entry.save()
+
+    }
+
+    true
 
   }
 
