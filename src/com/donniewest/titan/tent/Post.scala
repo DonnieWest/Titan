@@ -20,9 +20,11 @@ object Post {
      //bizarrely, this returns not only Status Posts but also Credential posts? Check into if this is a Tent side bug or me
     case class App(id: String, name: String, url: String) {
 
-      def getInfo = Map("id" -> id, "name" -> name, "url" -> url)
+      def getID = id
+      def getName = name
+      def getURL = url
 
-    }
+     }
 
 
     case class Content(text: String) {
@@ -33,7 +35,19 @@ object Post {
 
     case class Post(app: App , content: Content, entity: String, id: String, published_at: String, `type`: String){
 
-      def getInfo = Map("App" -> app.getInfo, "content" -> content.getText, "entity" -> entity, "id" -> id, "published" -> published_at, "type" -> `type`)
+      val app_info = app.getInfo
+
+      def getInfo = Map(
+        "app_name" -> app.getName,
+        "app_url" -> app.getURL,
+        "app_id" -> app.getID,
+        "content" -> content.getText,
+        "entity" -> entity,
+        "id" -> id,
+        "published" -> published_at,
+        "type" -> `type`)
+
+      //maybe convert this into a series of methods that retrieve this information?
     }
 
     case class Status_Posts(posts: List[Post]){
