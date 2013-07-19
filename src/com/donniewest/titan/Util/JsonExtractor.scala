@@ -3,7 +3,7 @@ package com.donniewest.titan.Util
 import net.liftweb.json._
 import net.liftweb.json.JsonAST.JValue
 
-object json_extractor {
+object JsonExtractor {
 
   def extract(from_json: JValue, to_extract: String ) = {
 

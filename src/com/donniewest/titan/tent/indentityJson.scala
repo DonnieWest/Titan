@@ -1,6 +1,6 @@
 package tent
 
-object identity_json {
+object indentityJson {
 
 
   val registration = """{

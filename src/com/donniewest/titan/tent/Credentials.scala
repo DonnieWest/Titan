@@ -5,9 +5,9 @@ import scala.beans.BeanProperty
 
 object Credentials {
 
-  @BeanProperty var access_token = ""
-  @BeanProperty var hawk_key = ""
-  @BeanProperty var hawk_algorithm = ""
-  @BeanProperty var token_type = ""
-  @BeanProperty var client_id = ""
+  @BeanProperty var accessToken = ""
+  @BeanProperty var hawkKey = ""
+  @BeanProperty var hawkAlgorithm = ""
+  @BeanProperty var tokenType = ""
+  @BeanProperty var clientID = ""
 }

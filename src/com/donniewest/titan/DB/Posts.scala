@@ -3,17 +3,25 @@ package DB
 import com.orm.SugarRecord
 import android.content.Context
 
-class Posts(context: Context, app_name: String = "", app_url: String = "", app_id: String = "", content: String, entity: String, id: String, published: String, `type`: String) extends SugarRecord(context: Context) {
+class Posts(context: Context,
+  app_name: String = "",
+  app_url: String = "",
+  app_id: String = "",
+  content: String,
+  entity: String,
+  id: String,
+  published: String,
+  `type`: String) extends SugarRecord(context: Context) {
 
 
 
-  val application_name = app_name
-  val application_url = app_url
-  val application_id = app_id
+  val applicationName = app_name
+  val applicationURL = app_url
+  val applicationID = app_id
   val text = content
-  val posting_entity = entity
-  val post_id = id
-  val published_at = published
-  val post_type = `type`
+  val postingEntity = entity
+  val postID = id
+  val publishedAt = published
+  val postType = `type`
 
 }

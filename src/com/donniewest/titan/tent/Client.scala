@@ -5,19 +5,19 @@ import android.content.Context
 
 object Client {
 
-  def authenticate_with_server(entity: String)  {
+  def authenticateServer(entity: String)  {
 
     Authentication.login(entity)
 
   }
 
-  def send_post(content: String) {
+  def sendPost(content: String) {
 
     Post.send_post(content)
 
   }
 
-  def retrieve_feed(context: Context) = {
+  def retrieveFeed(context: Context) = {
 
   Post.retrieve_feed(context)
   }
