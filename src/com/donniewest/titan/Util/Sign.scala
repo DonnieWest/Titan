@@ -7,7 +7,7 @@ import java.security.MessageDigest
 
 object Sign {
 
-  def Base64_and_HmacSha256(to_sign: String, mac_key: String) = {
+  def base64andHmacSha256(to_sign: String, mac_key: String) = {
 
     val mac = Mac.getInstance("HmacSHA256")
     mac.init(new SecretKeySpec(mac_key.getBytes,"HmacSHA256"))
@@ -17,15 +17,16 @@ object Sign {
 
   }
 
-  def Base64_and_Sha256_Digest(to_sign: String) = {
+  def base64AndSha256Digest(to_sign: String) = {
 
-    val message_digester = MessageDigest.getInstance("SHA-256")
-    Base64.encodeBytes(message_digester.digest(to_sign.getBytes))
+    val digest = MessageDigest.getInstance("SHA-256")
+    Base64.encodeBytes(digest.digest(to_sign.getBytes))
 
 
   }
 
   def RandomKeyGen() = {
+
 
 
 
