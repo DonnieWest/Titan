@@ -38,7 +38,7 @@ object Authentication {
 
     def register() {
 
-      val postLocationHeader = HttpRequest.post(Endpoints.getNewPost).contentType("application/vnd.tent.post.v0+json; type=\"https://tent.io/types/app/v0#\"").send(indentityJson.registration).header("Link")
+      val postLocationHeader = HttpRequest.post(Endpoints.getNewPost).contentType("application/vnd.tent.post.v0+json; type=\"https://tent.io/types/app/v0#\"").send(identityJson.registration).header("Link")
 
       val postLocation = postLocationHeader.split("<")(1).split(">")(0)
 
