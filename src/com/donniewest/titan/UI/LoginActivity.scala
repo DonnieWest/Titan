@@ -24,6 +24,7 @@ class LoginActivity extends SherlockActivity with SActivity {
 //        openUri(redirection)
 // The above ^ will be relevant when Tent 0.3 is released and the user has to go through the Oauth Flow. For now, nah
         error("Do I get this far?")
+        Client.retrieve_feed(getApplicationContext)
         startActivity[PostFeedActivity]
 
 
