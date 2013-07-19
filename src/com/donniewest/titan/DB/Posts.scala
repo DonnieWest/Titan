@@ -4,9 +4,9 @@ import com.orm.SugarRecord
 import android.content.Context
 
 class Posts(context: Context,
-  app_name: String = "",
-  app_url: String = "",
-  app_id: String = "",
+  appName: String = "",
+  appUrl: String = "",
+  appID: String = "",
   content: String,
   entity: String,
   id: String,
@@ -15,9 +15,9 @@ class Posts(context: Context,
 
 
 
-  val applicationName = app_name
-  val applicationURL = app_url
-  val applicationID = app_id
+  val applicationName = appName
+  val applicationURL = appUrl
+  val applicationID = appID
   val text = content
   val postingEntity = entity
   val postID = id

@@ -29,7 +29,7 @@ object Sign {
 
   }
 
-  def RandomKeyGen() = {
+  def randomKeyGen() = {
 
 /*    ripped from here: http://android-developers.blogspot.com/2013/02/using-cryptography-to-store-credentials.html
     generates and returns a random Key*/
