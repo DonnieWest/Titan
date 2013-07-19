@@ -3,6 +3,7 @@ package tent
 import com.github.kevinsawicki.http.HttpRequest
 import net.liftweb.json._
 import DB.Posts
+import android.content.Context
 
 object Post {
 
@@ -14,7 +15,7 @@ object Post {
 
   }
 
-  def retrieve_feed() {
+  def retrieve_feed(context: Context) {
     //returns true if feed has been retrieved, for now
     //TODO: make method capable of handling various post numbers, maybe even post types?
     val json_post_feed = parse(HttpRequest.get(Endpoints.getPost_feed + "?types=https%3A%2F%2Ftent.io%2Ftypes%status%2Fv0%23").accept("application/vnd.tent.posts-feed.v0+json").authorization(Hawk_Headers.build_headers("","GET", Endpoints.getPost_feed + "?types=https%3A%2F%2Ftent.io%2Ftypes%status%2Fv0%23", false , "application/vnd.tent.post.v0+json")).body)
@@ -61,7 +62,7 @@ object Post {
     val post_feed = json_post_feed.extract[Status_Posts].getPosts
     post_feed.foreach{i:Post =>
       val info = i.getInfo
-      val DB_entry = new Posts(info("app_name"), info("app_url"), info("app_id"), info("content"), info("entity"), info("id"), info("published"), info("type"))
+      val DB_entry = new Posts(context, info("app_name"), info("app_url"), info("app_id"), info("content"), info("entity"), info("id"), info("published"), info("type"))
       DB_entry.save()
 
     }
