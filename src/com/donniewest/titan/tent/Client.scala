@@ -1,6 +1,7 @@
 package tent
 
 import tent.{Post, Authentication}
+import android.content.Context
 
 object Client {
 
@@ -16,8 +17,8 @@ object Client {
 
   }
 
-  def retrieve_feed = {
+  def retrieve_feed(context: Context) = {
 
-  Post.retrieve_feed()
+  Post.retrieve_feed(context)
   }
 }
