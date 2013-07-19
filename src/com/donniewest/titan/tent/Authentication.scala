@@ -10,6 +10,13 @@ object Authentication {
 
   def login(entity: String) {
 
+/*    takes given entity and does all the steps for authentication with a tent server:
+    1. Discovery (extractEndpoints)
+    2. Registration
+    3. Authentication
+
+      */
+
     lazy val state = {
       val random = new Random().nextInt()
       if (random < 0) -random else random
@@ -19,7 +26,7 @@ object Authentication {
 
     def extractEndpoint() {
 
-      //takes in the server from find_server, extracts the endpoints for me to post and authenticate + etc
+      //takes in the server from serverEndoint, extracts the endpoints for me to post and authenticate + etc
 
       val endpoints_in_json = parse(HttpRequest.get(serverEndpoint).accept("application/vnd.tent.post.v0+json").body())
       Endpoints.setOauthAuth(JsonExtractor.extract(endpoints_in_json, "oauth_auth"))
@@ -38,6 +45,8 @@ object Authentication {
 
     def register() {
 
+//     registers with tent server, gets temporary credentials for next step
+
       val postLocationHeader = HttpRequest.post(Endpoints.getNewPost).contentType("application/vnd.tent.post.v0+json; type=\"https://tent.io/types/app/v0#\"").send(identityJson.registration).header("Link")
 
       val postLocation = postLocationHeader.split("<")(1).split(">")(0)
@@ -52,6 +61,8 @@ object Authentication {
     }
 
     def Auth() {
+
+//      Authenticates with server and retrieves permanent credentials for posting and etc
 
 
       val url = new URL(Endpoints.getOauthAuth + "?client_id=" + Credentials.getClientID + "&state=" + state)
@@ -70,11 +81,18 @@ object Authentication {
 
     }
 
-    extractEndpoint()
-    register()
-    Auth()
-    true
 
+//    1. Discovers
+
+    extractEndpoint()
+
+//    2. Registers
+
+    register()
+
+//    3. Authenticates
+
+    Auth()
 
   }
 

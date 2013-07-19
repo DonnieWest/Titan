@@ -9,6 +9,8 @@ object Post {
 
   def send_post(text: String) {
 
+//    takes in text and sends a simple status post
+
     val json = "{\"type\":\"https://tent.io/types/status/v0#\",\"content\":{\"text\":\"%s\"}}".format(text)
     val contentType = "application/vnd.tent.post.v0+json; type=\"https://tent.io/types/status/v0#\""
     HttpRequest.post(Endpoints.getNewPost).contentType(contentType).authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getNewPost, false, "application/vnd.tent.post.v0+json")).send(json).body
@@ -16,7 +18,9 @@ object Post {
   }
 
   def retrieve_feed(context: Context) {
-    //returns true if feed has been retrieved, for now
+
+//    retrieves the tent feed and stores in database, unfortunately requires context to work with Sugar ORM
+
     //TODO: make method capable of handling various post numbers, maybe even post types?
     val json_post_feed = parse(HttpRequest.get(Endpoints.getPostFeed + "?types=https%3A%2F%2Ftent.io%2Ftypes%status%2Fv0%23").accept("application/vnd.tent.posts-feed.v0+json").authorization(Hawk_Headers.build_headers("","GET", Endpoints.getPostFeed + "?types=https%3A%2F%2Ftent.io%2Ftypes%status%2Fv0%23", false , "application/vnd.tent.post.v0+json")).body)
      //bizarrely, this returns not only Status Posts but also Credential posts? Check into if this is a Tent side bug or me

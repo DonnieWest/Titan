@@ -2,6 +2,8 @@ package tent
 
 object identityJson {
 
+//  contains Json strings for authentication
+
 
   val registration = """{
   "type": "https://tent.io/types/app/v0#",

@@ -13,6 +13,9 @@ object Hawk_Headers {
     isTemporary: Boolean = false,
     contentType: String = "application/json") = {
 
+//    pulls in information and returns headers for hawk authentication
+
+
     lazy val hawkID = if (isTemporary) TempCredentials.getHawkID else Credentials.getAccessToken   //access token is used as Hawk_Id in requests after auth
     lazy val hawkKey =  if (isTemporary) TempCredentials.getHawkKey else Credentials.getHawkKey
     val app = Credentials.getClientID   //I believe the Client_ID from earlier still defines this app. I need to store this in database as well

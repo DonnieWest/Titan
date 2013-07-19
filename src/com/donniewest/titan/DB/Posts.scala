@@ -13,7 +13,7 @@ class Posts(context: Context,
   published: String,
   `type`: String) extends SugarRecord(context: Context) {
 
-
+//  Defines a Post Database Entry using Sugar ORM
 
   val applicationName = appName
   val applicationURL = appUrl
