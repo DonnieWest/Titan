@@ -4,7 +4,7 @@ import net.liftweb.json._
 import com.github.kevinsawicki.http.HttpRequest
 import scala.util.Random
 import java.net.{HttpURLConnection, URL}
-import com.donniewest.titan.Util.JsonExtractor
+import Util.JsonExtractor
 
 object Authentication {
 
