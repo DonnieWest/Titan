@@ -1,8 +1,11 @@
 package DB
 
 import com.orm.SugarRecord
+import android.content.Context
 
-class Posts(app_name: String = "", app_url: String = "", app_id: String = "", content: String, entity: String, id: String, published: String, `type`: String) extends SugarRecord {
+class Posts(context: Context, app_name: String = "", app_url: String = "", app_id: String = "", content: String, entity: String, id: String, published: String, `type`: String) extends SugarRecord(context: Context) {
+
+
 
   val application_name = app_name
   val application_url = app_url
