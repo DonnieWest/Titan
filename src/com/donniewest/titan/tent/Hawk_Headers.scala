@@ -3,6 +3,7 @@ package tent
 import scala.util.Random
 import Util.Sign
 import java.net.URL
+import android.content.Context
 
 object Hawk_Headers {
 
@@ -11,14 +12,15 @@ object Hawk_Headers {
     method: String,
     url: String,
     isTemporary: Boolean = false,
-    contentType: String = "application/json") = {
+    contentType: String = "application/json",
+    context: Context) = {
 
 //    pulls in information and returns headers for hawk authentication
 
 
-    lazy val hawkID = if (isTemporary) TempCredentials.getHawkID else Credentials.getAccessToken   //access token is used as Hawk_Id in requests after auth
-    lazy val hawkKey =  if (isTemporary) TempCredentials.getHawkKey else Credentials.getHawkKey
-    val app = Credentials.getClientID   //I believe the Client_ID from earlier still defines this app. I need to store this in database as well
+    lazy val hawkID = if (isTemporary) TempCredentials.getHawkID else Credentials.getAccessToken(context.getApplicationContext)   //access token is used as Hawk_Id in requests after auth
+    lazy val hawkKey =  if (isTemporary) TempCredentials.getHawkKey else Credentials.getHawkKey(context.getApplicationContext)
+    val app = Credentials.getClientID(context.getApplicationContext)   //I believe the Client_ID from earlier still defines this app. I need to store this in database as well
     val nonce = Random.alphanumeric.take(8).mkString
     val timestamp =  (System.currentTimeMillis() / 1000).asInstanceOf[Int]
     val castedUrl = new URL(url)   //Aha! Instantiate new URL, get pretty methods, type safe!
