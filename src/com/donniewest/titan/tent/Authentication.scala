@@ -27,7 +27,7 @@ object Authentication {
 
     def extractEndpoint() {
 
-      //takes in the server from serverEndoint, extracts the endpoints for me to post and authenticate + etc
+      //takes in the server from serverEndpoint, extracts the endpoints for me to post and authenticate + etc
 
       val endpoints_in_json = parse(HttpRequest.get(serverEndpoint).accept("application/vnd.tent.post.v0+json").body())
       Endpoints.setOauthAuth(JsonExtractor.extract(endpoints_in_json, "oauth_auth"))
