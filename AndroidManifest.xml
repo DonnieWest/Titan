@@ -18,14 +18,11 @@
 
 
     <application
-        android:name="com.orm.SugarApp"
-        android:icon="@drawable/icon"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.Bootstrap.Dark">
+        android:name="com.orm.SugarApp">
 
         <activity
             android:name=".UI.LoginActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" android:label="@string/app_name">
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
 
                 <action android:name="android.intent.action.MAIN" />
