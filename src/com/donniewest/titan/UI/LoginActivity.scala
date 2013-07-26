@@ -15,13 +15,10 @@ class LoginActivity extends SActivity {
     setContentView(
       new SVerticalLayout{
 
+          val username = SEditText() inputType TEXT_URI
+          SButton("Sign In", spawn{
 
-          val pass = SEditText() inputType TEXT_PASSWORD
-          SButton("Sign In").onClick{
-
-            spawn{
-
-            val entity = pass.text.toString
+            val entity = username.text.toString
             Client.authenticateServer(entity, getApplicationContext)
             /*        openUri(redirection)
             This will be relevant when Tent 0.3 is released and the user has to go through the Oauth Flow*/
@@ -29,8 +26,7 @@ class LoginActivity extends SActivity {
             startActivity[PostFeedActivity]
 
 
-          }}
-
+          })
       }
 
     )
