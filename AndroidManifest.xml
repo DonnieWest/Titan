@@ -35,6 +35,7 @@
                 
             </intent-filter>
         </activity>
+        <activity android:name="UI.LoginWebView"/>
         <meta-data android:name="DATABASE" android:value="titan.db" />
         <meta-data android:name="VERSION" android:value="1" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
