@@ -111,7 +111,10 @@ object Credentials {
 
   def deleteCredentials(context: Context) = {
 
-    (hawkKey, hawkAlgorithm, tokenType, clientID) = ""          //first, blank variables
+    this.hawkKey = ""
+    this.hawkAlgorithm = ""
+    this.tokenType = ""
+    this.clientID = ""          //first, blank variables
     context.getSharedPreferences("Titan_Credentials", Context.MODE_PRIVATE).edit().clear().commit()      //second, clear preferences
 
   }
