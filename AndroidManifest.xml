@@ -18,7 +18,7 @@
 
 
     <application
-        android:name="com.orm.SugarApp">
+        android:name="TitanApplication">
 
         <activity
             android:name="LoginActivity"
