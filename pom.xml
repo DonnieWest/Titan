@@ -12,7 +12,7 @@
     <url>https://github.com/donniewest/titan</url>
 
     <properties>
-        <scala.version>2.10.2</scala.version>
+        <scala.version>2.10.0</scala.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <android.version>4.1.1.4</android.version>
     </properties>
@@ -43,17 +43,11 @@
             <artifactId>http-request</artifactId>
             <version>5.4</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.chrisbanes.actionbarpulltorefresh</groupId>
-            <artifactId>library</artifactId>
-            <version>0.5</version>
-        </dependency>
     </dependencies>
     <profiles>
         <profile>
             <id>release</id>
             <build>
-            <!--<sourceDirectory>/home/igneo676/Dropbox/Apps/Titan/src</sourceDirectory>-->
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -64,27 +58,18 @@
                                 <id>signing</id>
                                 <goals>
                                     <goal>sign</goal>
-                                    <goal>verify</goal>
                                 </goals>
                                 <phase>package</phase>
                                 <inherited>true</inherited>
                                 <configuration>
-                                    <removeExistingSignatures>true</removeExistingSignatures>
                                     <archiveDirectory></archiveDirectory>
                                     <includes>
                                         <include>target/*.apk</include>
                                     </includes>
-                                    <!-- These values can either be placed directly into to file below, or provided
-                                    via the command line during the build process as such:
-                                     "mvn clean release -Dbootstrap.sign.keystore=foobar" ... etc.
-                                     This will keep the keystore out of your file so no prying eyes can see.
-                                     Also, if you have a ci (Continuous Integration) profile, these values can be
-                                     passed in via the build server. -->
-                                    <keystore>${bootstrap.sign.keystore}</keystore>
-                                    <alias>${bootstrap.sign.alias}</alias>
-                                    <storepass>${bootstrap.sign.storepass}</storepass>
-                                    <keypass>${bootstrap.sign.keypass}</keypass>
-                                    <verbose>true</verbose>
+                                    <keystore>scala-test.keystore</keystore>
+                                    <storepass>scalatest</storepass>
+                                    <keypass>scalatest</keypass>
+                                    <alias>androidscalatest</alias>
                                 </configuration>
                             </execution>
                         </executions>
@@ -112,6 +97,7 @@
             </build>
         </profile>
     </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -122,9 +108,9 @@
                     <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
                     <assetsDirectory>${project.basedir}/assets</assetsDirectory>
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
-                    <nativeLibrariesDirectory>${project.basedir}/lib</nativeLibrariesDirectory>
+                    <nativeLibrariesDirectory>${project.basedir}/src/main/native</nativeLibrariesDirectory>
                     <sdk>
-                        <platform>16</platform>
+                        <platform>17</platform>
                     </sdk>
                     <dex>
                         <jvmArguments>
@@ -142,15 +128,16 @@
                 </configuration>
                 <extensions>true</extensions>
             </plugin>
+
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
-                <extensions>true</extensions>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.5</source>
+                    <target>1.5</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
@@ -182,7 +169,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>src/com/donniewest/titan</source>
+                                <source>src/main/scala</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -190,6 +177,7 @@
             </plugin>
         </plugins>
     </build>
+
     <reporting>
         <plugins>
             <plugin>
