@@ -1,14 +1,13 @@
-package UI
-
 import tent.Client
 import com.donniewest.titan.R
 import android.widget.{TextView, Button}
 import org.scaloid.common._
 import android.os.Bundle
 import scala.concurrent.ops._
+import android.support.v7.app.ActionBarActivity
 
 
-class LoginActivity extends SActivity {
+class LoginActivity extends ActionBarActivity with SActivity {
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
@@ -20,7 +19,7 @@ class LoginActivity extends SActivity {
 
             val entity = username.text.toString
             Client.authenticateServer(entity, getApplicationContext)
-            /*        openUri(redirection)
+            /*openUri(redirection)
             This will be relevant when Tent 0.3 is released and the user has to go through the Oauth Flow*/
             Client.retrieveFeed(getApplicationContext)
             startActivity[PostFeedActivity]

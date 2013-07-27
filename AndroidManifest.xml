@@ -21,7 +21,7 @@
         android:name="com.orm.SugarApp">
 
         <activity
-            android:name="UI.LoginActivity"
+            android:name="LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
 
@@ -35,8 +35,8 @@
                 
             </intent-filter>
         </activity>
-        <activity android:name="UI.LoginWebView"/>
-        <activity android:name="UI.PostFeedActivity"/>
+        <activity android:name="LoginWebView"/>
+        <activity android:name="PostFeedActivity"/>
         <meta-data android:name="DATABASE" android:value="titan.db" />
         <meta-data android:name="VERSION" android:value="1" />
         <meta-data android:name="QUERY_LOG" android:value="true" />

@@ -1,5 +1,3 @@
-package UI
-
 import android.os.Bundle
 import org.scaloid.common._
 
