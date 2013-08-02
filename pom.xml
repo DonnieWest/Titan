@@ -10,13 +10,27 @@
     <packaging>apk</packaging>
     <name>Titan</name>
     <url>https://github.com/donniewest/titan</url>
-
     <properties>
         <scala.version>2.10.0</scala.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <android.version>4.1.1.4</android.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>android.support</groupId>
+            <artifactId>support</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>android.support.appcompat</groupId>
+            <artifactId>appcompat</artifactId>
+            <version>7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.orm.Sugar</groupId>
+            <artifactId>sugar</artifactId>
+            <version>1.2</version>
+        </dependency>
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
@@ -108,7 +122,7 @@
                     <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
                     <assetsDirectory>${project.basedir}/assets</assetsDirectory>
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
-                    <nativeLibrariesDirectory>${project.basedir}/src/main/native</nativeLibrariesDirectory>
+                    <nativeLibrariesDirectory>${project.basedir}/lib</nativeLibrariesDirectory>
                     <sdk>
                         <platform>17</platform>
                     </sdk>
@@ -169,7 +183,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>src/main/scala</source>
+                                <source>src/com/donniewest/titan</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -177,7 +191,12 @@
             </plugin>
         </plugins>
     </build>
-
+    <repositories>
+        <repository>
+            <id>lib</id>
+            <url>file://${project.basedir}/lib</url>
+        </repository>
+    </repositories>
     <reporting>
         <plugins>
             <plugin>

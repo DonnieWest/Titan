@@ -1,6 +1,4 @@
 
-package com.donniewest.titan
-
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.FROYO
 import android.app.Instrumentation
