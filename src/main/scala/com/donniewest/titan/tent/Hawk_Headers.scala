@@ -1,7 +1,7 @@
-package tent
+package com.donniewest.titan.tent
 
 import scala.util.Random
-import Util.Sign
+import com.donniewest.titan.Util.Sign
 import java.net.URL
 import android.content.Context
 

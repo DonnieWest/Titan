@@ -1,8 +1,8 @@
-package tent
+package com.donniewest.titan.tent
 
 import com.github.kevinsawicki.http.HttpRequest
 import net.liftweb.json._
-import DB.Posts
+import com.donniewest.titan.DB.Posts
 import android.content.Context
 
 object Post {

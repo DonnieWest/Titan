@@ -1,4 +1,4 @@
-package Util
+package com.donniewest.titan.Util
 
 import net.liftweb.json._
 import net.liftweb.json.JsonAST.JValue

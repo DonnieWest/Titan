@@ -1,4 +1,6 @@
-import tent.Client
+package com.donniewest.titan
+
+import com.donniewest.titan.tent.Client
 import com.donniewest.titan.R
 import android.widget.{TextView, Button}
 import org.scaloid.common._
@@ -7,7 +9,7 @@ import scala.concurrent.ops._
 import android.support.v7.app.ActionBarActivity
 
 
-class LoginActivity extends ActionBarActivity with SActivity {
+class LoginActivity extends SActivity {
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)

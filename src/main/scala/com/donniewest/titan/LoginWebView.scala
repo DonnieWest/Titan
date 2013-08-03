@@ -1,3 +1,5 @@
+package com.donniewest.titan
+
 import android.os.Bundle
 import org.scaloid.common._
 

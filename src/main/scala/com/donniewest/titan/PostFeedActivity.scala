@@ -1,6 +1,8 @@
+package com.donniewest.titan
+
 import android.os.Bundle
 import com.orm.query.Select
-import DB.Posts
+import com.donniewest.titan.DB.Posts
 import org.scaloid.common._
 
 class PostFeedActivity extends SActivity{

@@ -1,4 +1,4 @@
-package DB
+package com.donniewest.titan.DB
 
 import com.orm.SugarRecord
 import android.content.Context

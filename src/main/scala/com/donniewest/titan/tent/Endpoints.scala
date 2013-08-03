@@ -1,4 +1,4 @@
-package tent
+package com.donniewest.titan.tent
 
 import scala.beans.BeanProperty
 

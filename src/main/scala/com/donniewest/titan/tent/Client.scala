@@ -1,6 +1,6 @@
-package tent
+package com.donniewest.titan.tent
 
-import tent.{Post, Authentication}
+import com.donniewest.titan.tent.{Post, Authentication}
 import android.content.Context
 
 object Client {
