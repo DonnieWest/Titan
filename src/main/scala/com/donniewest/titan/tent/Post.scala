@@ -7,7 +7,7 @@ import android.content.Context
 
 object Post {
 
-  def send_post(text: String, context: Context) {
+  def send_post(text: String) {
 
 //    takes in text and sends a simple status post
 
@@ -17,7 +17,7 @@ object Post {
 
   }
 
-  def retrieve_feed(context: Context) {
+  def retrieve_feed = {
 
 //    retrieves the tent feed and stores in database, unfortunately requires context to work with Sugar ORM
 

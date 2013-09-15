@@ -27,16 +27,16 @@ object Authentication {
       
       val translated = endpoints_in_json \ "content" \ "servers" \ "urls" 
 
-      case class urls(val oauth_auth: String,
-                      val oauth_token: String,
-                      val posts_feed: String,
-                      val post: String,
-                      val new_post: String,
-                      val post_attachment: String,
-                      val attachment: String,
-                      val batch: String,
-                      val server_info: String,
-                      val discover: String)
+      case class urls(oauth_auth: String,
+                      oauth_token: String,
+                      posts_feed: String,
+                      post: String,
+                      new_post: String,
+                      post_attachment: String,
+                      attachment: String,
+                      batch: String,
+                      server_info: String,
+                      discover: String)
 
       val all_endpoints = translated.extract[urls]
         
@@ -45,7 +45,7 @@ object Authentication {
       Endpoints.oauthToken(all_endpoints.oauth_token)
       Endpoints.newPost(all_endpoints.new_post)
       Endpoints.postFeed(all_endpoints.posts_feed)
-      Endpoints.post(((all_endpoints.post).replace("\"",""))
+      Endpoints.post(all_endpoints.post.replace("\"",""))
       Endpoints.attachment(all_endpoints.attachment)
       Endpoints.postAttachment(all_endpoints.post_attachment)
       Endpoints.batch(all_endpoints.batch)
