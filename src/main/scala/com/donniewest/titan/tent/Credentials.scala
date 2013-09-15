@@ -1,8 +1,5 @@
 package com.donniewest.titan.tent
 
-import android.content.Context
-
-
 object Credentials {
 
 //  stores credentials for after authentication

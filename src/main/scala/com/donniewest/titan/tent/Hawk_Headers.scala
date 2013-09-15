@@ -3,7 +3,6 @@ package com.donniewest.titan.tent
 import scala.util.Random
 import com.donniewest.titan.Util.Sign
 import java.net.URL
-import android.content.Context
 
 object Hawk_Headers {
 

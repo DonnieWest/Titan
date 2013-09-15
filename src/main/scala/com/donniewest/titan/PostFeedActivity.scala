@@ -12,7 +12,7 @@ class PostFeedActivity extends SActivity{
 
 
 
-    val posts = Select.from(classOf[Posts]).orderBy("Published").list().toArray
+//    val posts = Select.from(classOf[Posts]).orderBy("Published").list().toArray
     val adapter = new SArrayAdapter(posts) //TODO: Style this using the .getView method
 
     setContentView(
