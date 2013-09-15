@@ -64,14 +64,6 @@ object Post {
     implicit val formats = DefaultFormats
 
     val post_feed = json_post_feed.extract[Status_Posts].getPosts
-    post_feed.foreach{i:Post =>
-      val info = i.getInfo
-      val DB_entry = new Posts(context, info("app_name"), info("app_url"), info("app_id"), info("content"), info("entity"), info("id"), info("published"), info("type"))
-      DB_entry.save()
-
-
-    }
-
     true
 
   }
