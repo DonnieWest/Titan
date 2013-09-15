@@ -4,7 +4,6 @@ import net.liftweb.json._
 import com.github.kevinsawicki.http.HttpRequest
 import scala.util.Random
 import java.net.{HttpURLConnection, URL}
-import com.donniewest.titan.Util.JsonExtractor
 
 object Authentication {
 
@@ -15,28 +14,42 @@ object Authentication {
     2. Registration
 */
 
-    lazy val state = {
-      val random = new Random().nextInt()
-      if (random < 0) -random else random
-    }
+
     //Need to find API endpoint
     val serverEndpoint = entity + HttpRequest.head(entity).header("Link").split("<")(1).split(">")(0)
 
     def extractEndpoint() {
-
+      implicit val formats = DefaultFormats
+          
       //takes in the server from serverEndpoint, extracts the endpoints for me to post and authenticate + etc
 
       val endpoints_in_json = parse(HttpRequest.get(serverEndpoint).accept("application/vnd.tent.post.v0+json").body())
-      Endpoints.setOauthAuth(JsonExtractor.extract(endpoints_in_json, "oauth_auth"))
-      Endpoints.setEntity(compact(render(endpoints_in_json \ "post" \ "content" \  "entity")).replace("\"","")) //returns two different entity locations, trimming it down!
-      Endpoints.setOauthToken(JsonExtractor.extract(endpoints_in_json, "oauth_token"))
-      Endpoints.setNewPost(JsonExtractor.extract(endpoints_in_json, "new_post"))
-      Endpoints.setPostFeed(JsonExtractor.extract(endpoints_in_json, "posts_feed"))
-      Endpoints.setPost(compact(render(endpoints_in_json \ "post" \ "content" \ "servers" \ "urls" \ "post")).replace("\"",""))
-      Endpoints.setAttachment(JsonExtractor.extract(endpoints_in_json, "attachment"))
-      Endpoints.setPostAttachment(JsonExtractor.extract(endpoints_in_json, "post_attachment"))
-      Endpoints.setBatch(JsonExtractor.extract(endpoints_in_json, "batch"))
-      Endpoints.setServerInfo(JsonExtractor.extract(endpoints_in_json, "server_info"))
+      
+      val translated = endpoints_in_json \ "content" \ "servers" \ "urls" 
+
+      case class urls(val oauth_auth: String,
+                      val oauth_token: String,
+                      val posts_feed: String,
+                      val post: String,
+                      val new_post: String,
+                      val post_attachment: String,
+                      val attachment: String,
+                      val batch: String,
+                      val server_info: String,
+                      val discover: String)
+
+      val all_endpoints = translated.extract[urls]
+        
+      Endpoints.oauthAuth(all_endpoints.oauth_auth)
+      Endpoints.entity(compact(render(endpoints_in_json \ "post" \ "content" \  "entity")).replace("\"","")) //returns two different entity locations, trimming it down!
+      Endpoints.oauthToken(all_endpoints.oauth_token)
+      Endpoints.newPost(all_endpoints.new_post)
+      Endpoints.postFeed(all_endpoints.posts_feed)
+      Endpoints.post(((all_endpoints.post).replace("\"",""))
+      Endpoints.attachment(all_endpoints.attachment)
+      Endpoints.postAttachment(all_endpoints.post_attachment)
+      Endpoints.batch(all_endpoints.batch)
+      Endpoints.serverInfo(all_endpoints.server_info)
 
       //TODO: Convert to a case class, properly parse all this into that!
 
@@ -47,7 +60,7 @@ object Authentication {
 
 //     registers with tent server, gets temporary credentials for next step
 
-      val postLocationHeader = HttpRequest.post(Endpoints.getNewPost).contentType("application/vnd.tent.post.v0+json; type=\"https://tent.io/types/app/v0#\"").send(identityJson.registration).header("Link")
+      val postLocationHeader = HttpRequest.post(Endpoints.newPost).contentType("application/vnd.tent.post.v0+json; type=\"https://tent.io/types/app/v0#\"").send(identityJson.registration).header("Link")
 
       val postLocation = postLocationHeader.split("<")(1).split(">")(0)
 
@@ -76,9 +89,12 @@ object Authentication {
   def second_leg_Auth() {
 
 //      Authenticates with server and retrieves permanent credentials for posting and etc
+      lazy val state = {
+        val random = new Random().nextInt()
+      if (random < 0) -random else random
+      }
 
-
-      val url = new URL(Endpoints.getOauthAuth + "?client_id=" + Credentials.getClientID + "&state=" + state)
+      val url = new URL(Endpoints.oauthAuth + "?client_id=" + Credentials.getClientID + "&state=" + state)
       val connection = url.openConnection().asInstanceOf[HttpURLConnection]
       connection.setInstanceFollowRedirects(false)
       val location = connection.getHeaderField("Location")  //HAH! On computer, HttpUrlConnection does not follow redirects. Android does. HttpRequest, which is based on HttpUrlconnection, can't turn off redirects
@@ -86,7 +102,7 @@ object Authentication {
 
       val json = "{\n  \"code\": \"%s\",\n  \"token_type\": \"https://tent.io/oauth/hawk-token\"\n}".format(code)
 
-      val jsonResponse = parse(HttpRequest.post(Endpoints.getOauthToken).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauthToken, true, "application/json")).contentType("application/json").send(json).body)
+      val jsonResponse = parse(HttpRequest.post(Endpoints.oauthToken).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.oauthToken, true, "application/json")).contentType("application/json").send(json).body)
       Credentials.setAccessToken(JsonExtractor.extract(jsonResponse,"access_token"))
       Credentials.setHawkAlgorithm(JsonExtractor.extract(jsonResponse,"hawk_algorithm"))
       Credentials.setHawkKey(JsonExtractor.extract(jsonResponse,"hawk_key"))

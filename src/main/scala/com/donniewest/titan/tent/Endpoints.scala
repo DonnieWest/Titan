@@ -1,22 +1,20 @@
 package com.donniewest.titan.tent
 
-import scala.beans.BeanProperty
-
 object Endpoints {
 
 //  stores endpoints for authentication
 
 
-  @BeanProperty var entity = ""
-  @BeanProperty var oauthAuth = ""
-  @BeanProperty var oauthToken = ""
-  @BeanProperty var postFeed = ""
-  @BeanProperty var post = ""
-  @BeanProperty var newPost = ""
-  @BeanProperty var postAttachment = ""
-  @BeanProperty var attachment = ""
-  @BeanProperty var batch = ""
-  @BeanProperty var serverInfo = ""
+  var entity: String = ""
+  var oauthAuth: String = ""
+  var oauthToken: String = ""
+  var postFeed: String = ""
+  var post: String = ""
+  var newPost:String = ""
+  var postAttachment: String = ""
+  var attachment: String = ""
+  var batch: String = ""
+  var serverInfo: String = ""
 
 
 }
