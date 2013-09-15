@@ -26,7 +26,6 @@ class LoginActivity extends SActivity {
             Client.retrieveFeed(getApplicationContext)
             startActivity[PostFeedActivity]
 
-
           })
       }
 

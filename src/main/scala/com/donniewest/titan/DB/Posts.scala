@@ -24,4 +24,6 @@ class Posts(context: Context,
   val publishedAt = published
   val postType = `type`
 
+
+
 }

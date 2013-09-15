@@ -5,18 +5,15 @@ import com.github.kevinsawicki.http.HttpRequest
 import scala.util.Random
 import java.net.{HttpURLConnection, URL}
 import com.donniewest.titan.Util.JsonExtractor
-import android.content.Context
 
 object Authentication {
 
-  def login(context: Context, entity: String) {
+  def one_leg_login(entity: String) {
 
-/*    takes given entity and does all the steps for authentication with a tent server:
+/*    takes given entity and does the first steps necessary to Authenticate with Tent Server
     1. Discovery (extractEndpoints)
     2. Registration
-    3. Authentication
-
-      */
+*/
 
     lazy val state = {
       val random = new Random().nextInt()
@@ -41,6 +38,8 @@ object Authentication {
       Endpoints.setBatch(JsonExtractor.extract(endpoints_in_json, "batch"))
       Endpoints.setServerInfo(JsonExtractor.extract(endpoints_in_json, "server_info"))
 
+      //TODO: Convert to a case class, properly parse all this into that!
+
 
     }
 
@@ -57,29 +56,8 @@ object Authentication {
       TempCredentials.setHawkAlgorithm(JsonExtractor.extract(jsonHawkCredentials, "hawk_algorithm"))
       TempCredentials.setHawkKey(JsonExtractor.extract(jsonHawkCredentials, "hawk_key"))
       //Client_ID must be stored and is not a temporary thing, others are
-      Credentials.setClientID(compact(render(jsonHawkCredentials \ "post" \ "mentions" \"post")).replace("\"",""), context.getApplicationContext)
+      Credentials.setClientID(compact(render(jsonHawkCredentials \ "post" \ "mentions" \"post")).replace("\"",""))
       TempCredentials.setHawkID(compact(render(jsonHawkCredentials \ "post" \ "id")).replace("\"",""))  //I can extract this /nicer/ with the methods in lift-json, but I'm lazy right now
-    }
-
-    def Auth() {
-
-//      Authenticates with server and retrieves permanent credentials for posting and etc
-
-
-      val url = new URL(Endpoints.getOauthAuth + "?client_id=" + Credentials.getClientID(context) + "&state=" + state)
-      val connection = url.openConnection().asInstanceOf[HttpURLConnection]
-      connection.setInstanceFollowRedirects(false)
-      val location = connection.getHeaderField("Location")  //HAH! On computer, HttpUrlConnection does not follow redirects. Android does. HttpRequest, which is based on HttpUrlconnection, can't turn off redirects
-      val code = location.split("code=")(1).split("&state=")(0)
-
-      val json = "{\n  \"code\": \"%s\",\n  \"token_type\": \"https://tent.io/oauth/hawk-token\"\n}".format(code)
-
-      val jsonResponse = parse(HttpRequest.post(Endpoints.getOauthToken).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauthToken, true, "application/json", context)).contentType("application/json").send(json).body)
-      Credentials.setAccessToken(JsonExtractor.extract(jsonResponse,"access_token"), context.getApplicationContext)
-      Credentials.setHawkAlgorithm(JsonExtractor.extract(jsonResponse,"hawk_algorithm"), context.getApplicationContext)
-      Credentials.setHawkKey(JsonExtractor.extract(jsonResponse,"hawk_key"), context.getApplicationContext)
-      Credentials.setTokenType(JsonExtractor.extract(jsonResponse,"token_type"), context.getApplicationContext)
-
     }
 
 
@@ -91,11 +69,33 @@ object Authentication {
 
     register()
 
-//    3. Authenticates
-
-    Auth()
 
   }
 
 
-}
+  def second_leg_Auth() {
+
+//      Authenticates with server and retrieves permanent credentials for posting and etc
+
+
+      val url = new URL(Endpoints.getOauthAuth + "?client_id=" + Credentials.getClientID + "&state=" + state)
+      val connection = url.openConnection().asInstanceOf[HttpURLConnection]
+      connection.setInstanceFollowRedirects(false)
+      val location = connection.getHeaderField("Location")  //HAH! On computer, HttpUrlConnection does not follow redirects. Android does. HttpRequest, which is based on HttpUrlconnection, can't turn off redirects
+      val code = location.split("code=")(1).split("&state=")(0)
+
+      val json = "{\n  \"code\": \"%s\",\n  \"token_type\": \"https://tent.io/oauth/hawk-token\"\n}".format(code)
+
+      val jsonResponse = parse(HttpRequest.post(Endpoints.getOauthToken).accept("application/json").authorization(Hawk_Headers.build_headers(json,"POST",Endpoints.getOauthToken, true, "application/json")).contentType("application/json").send(json).body)
+      Credentials.setAccessToken(JsonExtractor.extract(jsonResponse,"access_token"))
+      Credentials.setHawkAlgorithm(JsonExtractor.extract(jsonResponse,"hawk_algorithm"))
+      Credentials.setHawkKey(JsonExtractor.extract(jsonResponse,"hawk_key"))
+      Credentials.setTokenType(JsonExtractor.extract(jsonResponse,"token_type"))
+
+    }
+
+
+  }
+
+
+

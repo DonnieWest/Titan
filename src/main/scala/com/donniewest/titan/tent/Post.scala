@@ -69,6 +69,7 @@ object Post {
       val DB_entry = new Posts(context, info("app_name"), info("app_url"), info("app_id"), info("content"), info("entity"), info("id"), info("published"), info("type"))
       DB_entry.save()
 
+
     }
 
     true
